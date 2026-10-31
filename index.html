@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#1b2620">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>CorelDRAW — Тренажёр / Trenajyor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-core.min.js"></script>
+<style>
+:root{--bg:#dfe4e1;--panel:#fff;--ink:#17201b;--mut:#5d6b63;--line:#cbd3ce;--acc:#0e8a4a;--accI:#fff;--sel:#e3f3ea;--grid:#cfd6d2;--bar:#1b2620;--barI:#e8efe9;--warn:#c4521b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#262c28;--panel:#1a211d;--ink:#e8efe9;--mut:#9aab9f;--line:#2f3b33;--acc:#3ccf84;--accI:#06180e;--sel:#1d3326;--grid:#2f3731;--bar:#0b100d;--warn:#f08a56}}
+:root[data-theme="dark"]{--bg:#262c28;--panel:#1a211d;--ink:#e8efe9;--mut:#9aab9f;--line:#2f3b33;--acc:#3ccf84;--accI:#06180e;--sel:#1d3326;--grid:#2f3731;--bar:#0b100d;--warn:#f08a56}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100dvh;margin:0;overscroll-behavior:none;-webkit-touch-callout:none;-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 Onest,system-ui,-apple-system,Segoe UI,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+button,select,input{font:inherit;color:inherit}
+select,input{font-size:16px}
+@media (pointer:coarse){.ab,.tg{min-height:40px}.tb{min-width:60px;padding:6px 7px}#pal b{width:28px;height:34px}}
+@media (max-height:520px){#tip,#st{display:none}.tb{min-width:0;padding:3px 7px}.tb i{font-size:16px}#pal b{height:26px}}
+.ab.on{background:var(--acc);color:var(--accI)}
+#xpan{display:none;gap:6px;padding:6px 8px;background:var(--panel);border-top:2px solid var(--warn);overflow-x:auto;align-items:center}#xpan.on{display:flex}
+#demo{position:fixed;inset:0;background:var(--bg);z-index:25;display:none;flex-direction:column;gap:6px;padding:calc(8px + env(safe-area-inset-top,0px)) 10px calc(8px + env(safe-area-inset-bottom,0px))}#demo.on{display:flex}#dsv{flex:1;min-height:0;width:100%;background:#fff;border-radius:12px;box-shadow:0 2px 14px #0005}#dcap{font-size:clamp(17px,2.6vw,28px);min-height:5em;padding:2px 4px}#dbar{display:flex;gap:8px}#dbar button{flex:1;font-size:20px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel)}#dbar button:disabled{opacity:.35}#dbar .go{flex:2;border:0}
+#ref{position:fixed;inset:0;background:#000a;display:none;z-index:22}#ref.on{display:flex}#ref .rb{margin:auto;width:min(94vw,560px);max-height:88vh;overflow:auto;background:var(--panel);border-radius:14px;padding:12px}.ri{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:14px}.ri i{font-style:normal;font-size:22px;flex:0 0 32px;text-align:center}.ri small{color:var(--mut)}
+#lec{position:fixed;inset:0;background:#000a;display:none;z-index:22}#lec.on{display:flex}#lec .rb{margin:auto;width:min(96vw,640px);max-height:92vh;overflow:auto;background:var(--panel);border-radius:14px;padding:14px}#lec p{margin:8px 0;line-height:1.55}#lec h3{margin:4px 0 6px}.lc{display:block;width:100%;text-align:left;padding:11px;margin:5px 0;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.gx{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}.gx figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}.gx figcaption{padding:6px;font-size:13px}#xpan input,#xpan select{width:70px;height:34px;border:1px solid var(--line);border-radius:6px;background:var(--panel)}#xpan select{width:auto}#xpan label{font-size:12px;color:var(--mut);display:flex;gap:4px;align-items:center;flex:0 0 auto}
+.toast{position:fixed;left:50%;top:60px;transform:translateX(-50%);background:var(--acc);color:var(--accI);padding:8px 14px;border-radius:12px;font-weight:600;z-index:40;box-shadow:0 4px 16px #0006;max-width:90vw}
+.bd{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:10px;padding:5px 8px;margin:3px 3px 0 0;font-size:13px}.bd.lk{opacity:.4;filter:grayscale(1)}
+.ch{background:linear-gradient(100deg,#e4572e33,#2a7fff33);border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0}
+header{display:flex;align-items:center;gap:8px;padding:7px 10px;background:linear-gradient(100deg,var(--bar) 35%,#0e8a4a 70%,#2a7fff 100%);color:#fff}
+header b{font-weight:800;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header button{background:transparent;border:1px solid #ffffff44;color:var(--barI);border-radius:8px;padding:4px 9px}
+main{flex:1;min-height:0;display:flex;flex-direction:column}
+#stage{flex:1;min-height:0;position:relative;background:radial-gradient(circle at 12% 18%,#e4572e66,transparent 38%),radial-gradient(circle at 90% 28%,#2a7fff66,transparent 40%),radial-gradient(circle at 28% 94%,#8e44ad66,transparent 42%),radial-gradient(circle at 86% 92%,#ffd23f55,transparent 36%),var(--bg);display:flex;align-items:center;justify-content:center;padding:8px}
+svg#cv{max-width:100%;max-height:100%;aspect-ratio:4/5;height:100%;background:#fff;box-shadow:0 2px 14px #0005;touch-action:none;user-select:none;-webkit-user-select:none}
+#tip{position:absolute;left:8px;right:8px;top:8px;background:var(--bar);color:var(--barI);border-radius:8px;padding:5px 9px;font-size:12.5px;pointer-events:none;opacity:.94}
+#st{font-size:12px;padding:3px 10px;background:var(--bar);color:var(--barI);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tools,#pw,#props{display:flex;gap:6px;padding:6px 8px;background:var(--panel);border-top:1px solid var(--line);overflow-x:auto;align-items:center}
+.tb{flex:0 0 auto;min-width:56px;display:flex;flex-direction:column;align-items:center;padding:4px 6px;border:1px solid var(--line);background:var(--panel);border-radius:9px;font-size:10.5px;color:var(--mut)}
+.tb i{font-style:normal;font-size:19px;line-height:1.1;color:var(--ink)}
+.tb.on{background:var(--acc);border-color:var(--acc);color:var(--accI)}.tb.on i{color:var(--accI)}
+.hl{outline:3px solid var(--warn);outline-offset:1px}
+.tg{flex:0 0 auto;display:flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:3px 8px;font-size:12px}
+.tg.on{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc)}
+.tg s{display:block;width:18px;height:18px;border:2px solid var(--ink);text-decoration:none}
+#pal{display:flex;gap:2px;flex:0 0 auto}
+#pal b{width:24px;height:28px;border:1px solid #0004;display:block;cursor:pointer}
+#props select{height:30px;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+#props label{font-size:12px;color:var(--mut);display:flex;gap:4px;align-items:center;flex:0 0 auto}
+.ab{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 9px;font-size:13px}
+#cc{width:30px;height:28px;padding:0;border:1px solid var(--line);background:none;flex:0 0 auto}
+#lesson{background:var(--panel);border-top:2px solid var(--acc);max-height:36vh;overflow:auto;padding:9px 12px}
+#lesson.off{display:none}
+#lesson h2{margin:0 0 4px;font-size:16px}
+.why{background:var(--sel);border-radius:8px;padding:6px 9px;margin:4px 0 6px;font-size:14px}
+ol.st{list-style:none;margin:6px 0;padding:0}
+ol.st li{display:flex;gap:8px;padding:5px 4px;border-top:1px solid var(--line);font-size:14px}
+.ck{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px}
+li.ok .ck{background:var(--acc);border-color:var(--acc);color:var(--accI)}
+li.ok .t{color:var(--mut);text-decoration:line-through}
+li.cur{background:var(--sel);border-radius:8px}
+.go{background:var(--acc);color:var(--accI);border:0;border-radius:10px;padding:9px 14px;font-weight:600}
+#menu{position:fixed;inset:0;background:#000a;display:none;z-index:20}
+#menu.open{display:block}
+#mlist{position:absolute;left:0;top:0;bottom:0;width:min(86vw,340px);background:var(--panel);padding:calc(14px + env(safe-area-inset-top,0px)) 12px 14px;overflow:auto}
+#mlist button{display:flex;width:100%;text-align:left;gap:8px;padding:9px;margin:3px 0;border:1px solid var(--line);background:var(--panel);border-radius:10px}
+#mlist .cur{border-color:var(--acc);background:var(--sel)}
+.n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-size:13px}
+.d .n{background:var(--acc);color:var(--accI)}
+@media (min-width:860px),(min-width:640px) and (orientation:landscape){main{display:grid;grid-template-columns:minmax(250px,34vw) 1fr;grid-template-rows:1fr auto auto auto auto}
+#lesson{grid-row:1/9;grid-column:1;max-height:none;border-top:0;border-right:2px solid var(--acc)}
+#lesson.off{display:block}#stage,#st,#tools,#pw,#tabs,#props,#xpan{grid-column:2}}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#menu,#demo,#ref,#lec,#ask{top:0;left:0;right:0;bottom:0}
+:root{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+body{-webkit-user-select:none;user-select:none}input{-webkit-user-select:text;user-select:text}
+#tools,#pw,#props,#xpan{-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+@media (max-width:380px){header b{display:none}header button{padding:4px 7px}#xp{font-size:11px}.tb{min-width:50px;font-size:10px}}
+@media (min-width:600px) and (pointer:coarse){.tb{min-width:72px;font-size:12px}.tb i{font-size:24px}#pal b{width:34px;height:40px}.ab,.tg{font-size:15px}}
+#ask{position:fixed;background:#000a;display:none;z-index:50;align-items:center;justify-content:center}#ask.on{display:flex}#ask .rb{background:var(--panel);border-radius:14px;padding:14px;width:min(92vw,360px);display:flex;flex-direction:column;gap:10px}#ask input{height:44px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:var(--panel)}
+#tip{transition:opacity .4s}
+#tabs{display:flex;gap:4px;padding:5px 8px 0;background:var(--panel);border-top:1px solid var(--line);overflow-x:auto}#tabs button{flex:1 0 auto;border:1px solid var(--line);border-bottom:0;border-radius:9px 9px 0 0;background:var(--bg);padding:6px 11px;font-size:13px;color:var(--mut)}#tabs button.on{background:var(--panel);color:var(--ink);font-weight:600;border-color:var(--acc)}
+#fab{position:absolute;right:8px;bottom:8px;display:flex;gap:7px}#fab button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--panel);font-size:20px;box-shadow:0 2px 8px #0005}#fab button:disabled{opacity:.4}#fab #fdel{background:var(--warn);color:#fff;border:0}
+#lng{position:fixed;top:0;left:0;right:0;bottom:0;background:#000b;display:none;z-index:60;align-items:center;justify-content:center}#lng.on{display:flex}#lng .rb{background:var(--panel);border-radius:16px;padding:18px;width:min(88vw,340px);display:flex;flex-direction:column;gap:12px;text-align:center}#lng .go{font-size:18px;padding:14px}
+#lesson.mini .why,#lesson.mini li:not(.cur),#lesson.mini #smb{display:none}#lesson.mini{max-height:24vh}
+.lgs{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}.lgs button{border:0;border-radius:0;background:var(--panel);padding:7px 14px;font-weight:700;color:var(--mut)}.lgs button.on{background:var(--acc);color:var(--accI)}header .lgs{border-color:#ffffff77}header .lgs button{background:transparent;color:var(--barI);padding:5px 10px}header .lgs button.on{background:#fff;color:#14213d}.lh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+#hint{display:none;padding:5px 10px;font-size:13px;background:var(--sel);border-top:1px solid var(--line);line-height:1.3}
+body.focus #hint{display:block}
+body.focus #lesson,body.focus #st,body.focus #tabs,body.focus #props,body.focus #xpan{display:none}
+body.focus main{display:flex;flex-direction:column}
+#fc.on{background:#fff;color:#14213d}
+@media (max-width:380px){#lt,#xp{display:none}}
+@media (max-height:700px){#lesson.mini{max-height:20vh;padding:6px 10px}#lesson h2{font-size:14px}}
+.cf{position:fixed;top:-14px;width:10px;height:14px;z-index:30;pointer-events:none;animation:fall 1.9s ease-in forwards}@keyframes fall{to{transform:translateY(108vh) rotate(720deg)}}@media (prefers-reduced-motion:reduce){.cf{display:none}}
+#xp{font-size:13px;white-space:nowrap}.ab.fx{background:linear-gradient(90deg,#e4572e,#ec008c,#3a3ad6);color:#fff;border:0;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+ <button id="mbtn">☰</button><b>CorelDRAW · <span data-k="app"></span></b>
+ <span id="xp"></span><button id="lcb">📘</button><button id="rfb">📚</button><button id="lt">📖</button><button id="fc" aria-label="canvas" title="⛶">⛶</button><span id="lgs"></span>
+</header>
+<main>
+ <section id="lesson" aria-live="polite"></section>
+ <div id="stage"><svg id="cv" viewBox="0 0 400 500"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd23f"/><stop offset="1" stop-color="#ec008c"/></linearGradient><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#17bebb"/><stop offset="1" stop-color="#3a3ad6"/></linearGradient><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00a651"/><stop offset="1" stop-color="#fff200"/></linearGradient><linearGradient id="g4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ec008c"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#ec008c"/></linearGradient><linearGradient id="g5" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff6a2b"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#ff6a2b"/></linearGradient><linearGradient id="g6" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000"/><stop offset=".5" stop-color="#e000e0"/><stop offset="1" stop-color="#000"/></linearGradient></defs><g id="L"></g><g id="H"></g></svg><div id="tip"></div><div id="fab"><button data-a="undo">↶</button><button data-a="redo">↷</button><button data-a="dup">⧉</button><button data-a="del" id="fdel">🗑</button></div></div>
+ <div id="st"></div>
+ <div id="hint"></div>
+ <div id="tools"></div>
+ <div id="pw">
+  <button class="tg on" data-g="fill"><s id="sf"></s><span data-k="fill"></span></button>
+  <button class="tg" data-g="stroke"><s id="ss" style="background:none"></s><span data-k="stroke"></span></button>
+  <div id="pal"></div><input type="color" id="cc" value="#e4572e">
+ </div>
+ <div id="tabs"></div>
+ <div id="props">
+  <button class="ab fx" id="xbtn" data-k="xt"></button><button class="ab fx" data-a="abs" data-k="abs"></button><button class="ab fx" data-a="orn" data-k="orn"></button><button class="ab" data-a="mir" data-k="mir"></button>
+  <label><span data-k="op"></span><select id="op"><option value="1">100%</option><option value="0.7">70%</option><option value="0.4">40%</option></select></label>
+  <label><span data-k="sw"></span><select id="sw"><option>0</option><option selected>2</option><option>4</option><option>8</option><option>12</option></select></label>
+  <button class="ab" data-a="dup" data-k="dup"></button><button class="ab" data-a="front" data-k="front"></button><button class="ab" data-a="back" data-k="back"></button>
+  <button class="ab" data-a="rot" data-k="rot"></button><button class="ab" data-a="ctr" data-k="ctr"></button>
+  <button class="ab" data-a="ms" data-k="ms"></button><button class="ab fx" data-a="uni" data-k="uni"></button><button class="ab fx" data-a="sub" data-k="sub"></button><button class="ab fx" data-a="int" data-k="int"></button><button class="ab" data-a="grp" data-k="grp"></button><button class="ab" data-a="ugr" data-k="ugr"></button><button class="ab" data-a="alL">⬅</button><button class="ab" data-a="alR">➡</button><button class="ab" data-a="alT">⬆</button><button class="ab" data-a="alB">⬇</button><button class="ab" data-a="alX">⬌</button><button class="ab" data-a="alY">⬍</button><button class="ab fx" data-a="png">⬇ PNG</button><button class="ab" data-a="svg">⬇ SVG</button><button class="ab" data-a="clr" data-k="clr"></button><button class="ab fx" data-a="nadd" data-k="nadd"></button><button class="ab" data-a="ndel" data-k="ndel"></button><button class="ab" data-a="nsm" data-k="nsm"></button><button class="ab" data-a="ncl" data-k="ncl"></button><button class="ab" data-a="fx" data-k="fx"></button><button class="ab" data-a="fy" data-k="fy"></button><button class="ab" data-z="1.3">🔍＋</button><button class="ab" data-z="0.77">🔍－</button><button class="ab" data-z="0">100%</button><button class="ab" data-a="undo" data-k="undo"></button><button class="ab" data-a="redo" data-k="redo"></button><button class="ab" data-a="del" data-k="del"></button>
+ </div>
+ <div id="xpan"><label><span data-k="xa"></span><input id="xa" type="number" inputmode="decimal" value="30"></label><label><span data-k="xn"></span><input id="xn" type="number" inputmode="numeric" value="11"></label><label><span data-k="xs"></span><input id="xs" type="number" inputmode="numeric" value="100"></label><select id="xc"><option value="p" data-k="xp"></option><option value="o" data-k="xo"></option></select><button class="ab fx" id="xgo" data-k="xok"></button></div>
+</main>
+<div id="demo"><svg id="dsv" viewBox="0 0 400 500"></svg><div id="dcap"></div><div id="dbar"><button id="dp">◀</button><button class="go" id="da">▶ Auto</button><button id="dn">▶</button><button id="dx">✕</button></div></div>
+<div id="lng"><div class="rb"><b>Til / Язык</b><button class="go" data-l="1">O‘zbekcha</button><button class="go" data-l="0">Русский</button></div></div>
+<div id="ask"><div class="rb"><b id="aq"></b><input id="ai" maxlength="40" autocomplete="off"><button class="go" id="ao">OK</button></div></div>
+<div id="lec"><div class="rb"></div></div>
+<div id="ref"><div class="rb"></div></div>
+<div id="menu"><div id="mlist"></div></div>
+<script>
+const K={app:['Тренажёр','Trenajyor'],fill:['Заливка','To‘ldirish'],stroke:['Контур','Kontur'],sw:['Толщина','Qalinlik'],dup:['Копия','Nusxa'],front:['Наверх','Oldinga'],back:['Вниз','Orqaga'],rot:['Поворот 15°','Burish 15°'],ctr:['По центру','Markazga'],undo:['↶ Отмена','↶ Bekor'],redo:['↷ Вернуть','↷ Qaytar'],del:['Удалить','O‘chirish'],why:['Зачем это нужно.','Nima uchun kerak.'],ok:['Урок пройден.','Dars tugadi.'],nx:['Следующий урок','Keyingi dars'],end:['Курс пройден. Теперь рисуйте свободно.','Kurs tugadi. Endi erkin chizing.'],rs:['Начать заново','Qaytadan boshlash'],ls:['Уроки','Darslar'],lp:['Урок','Dars'],txt:['Введите текст:','Matn kiriting:'],def:['Логотип','Logo'],abs:['✨ Абстракция','✨ Abstraksiya'],op:['Прозрачность','Shaffoflik'],orn:['🌸 Орнамент','🌸 Naqsh'],mir:['🪞 Симметрия','🪞 Simmetriya'],ch:['Челлендж дня','Kun topshirig‘i'],bd:['Достижения','Yutuqlar'],rk:['Звание','Daraja'],xt:['🔄 Трансформация','🔄 Transformatsiya'],xa:['Угол °','Burchak °'],xn:['Копий','Nusxa'],xs:['Масштаб %','Masshtab %'],xp:['Центр: страницы','Markaz: sahifa'],xo:['Центр: объекта','Markaz: obyekt'],xok:['Применить','Qo‘llash'],sm:['👁 Образец','👁 Namuna'],pick:['Выберите объект','Obyektni tanlang'],dm:['Для класса: показать по шагам','Sinf uchun: bosqichma-bosqich'],stp:['Шаг','Qadam'],rf:['Справочник инструментов','Asboblar ma‘lumotnomasi'],ac:['Действия и эффекты','Amallar va effektlar'],fx:['↔ Отразить','↔ Aks'],fy:['↕ Отразить','↕ Aks'],ms:['☑ Несколько','☑ Bir nechta'],uni:['⊕ Объединить','⊕ Birlashtirish'],sub:['⊖ Вычесть','⊖ Ayirish'],int:['⊗ Пересечь','⊗ Kesishma'],grp:['Группа','Guruh'],ugr:['Разгруппировать','Guruhni ajratish'],two:['Выберите 2 и больше объектов (☑ Несколько)','2 ta va undan ko‘p obyekt tanlang (☑ Bir nechta)'],nob:['Эту фигуру нельзя использовать (линия, текст, перо)','Bu shakl yaramaydi (chiziq, matn, qalam)'],nodl:['Сохранение недоступно в этом окне','Bu oynada saqlash mumkin emas'],lc:['Лекции: с нуля','Ma‘ruzalar: noldan'],bk:['← К списку','← Ro‘yxatga'],nl:['Следующая лекция','Keyingi ma‘ruza'],clr:['🧹 Очистить всё','🧹 Hammasini tozalash'],clr2:['Нажмите ещё раз, чтобы очистить всё','Tozalash uchun yana bosing'],nadd:['＋ Узел','＋ Tugun'],ndel:['－ Узел','－ Tugun'],nsm:['◠ Плавный / острый','◠ Silliq / o‘tkir'],ncl:['⭘ Замкнуть / разомкнуть','⭘ Yopish / ochish'],pn:['Инструментом «Форма» коснитесь узла (квадрата)','«Shakl» bilan tugunga (kvadrat) tegining']};
+const GR={g1:'linear-gradient(135deg,#ffd23f,#ec008c)',g2:'linear-gradient(135deg,#17bebb,#3a3ad6)',g3:'linear-gradient(135deg,#00a651,#fff200)',g4:'linear-gradient(90deg,#ec008c,#fff,#ec008c)',g5:'linear-gradient(90deg,#ff6a2b,#fff,#ff6a2b)',g6:'linear-gradient(90deg,#000,#e000e0,#000)'};
+const TOOLS=[
+['pick','➤',['Выбор','Tanlash'],['«Выбор»: коснитесь объекта, чтобы выделить. Тяните объект — он переместится, угловой маркер — изменит размер.','«Tanlash»: obyektga tegib tanlang. Obyektni torting — ko‘chadi, burchak markeri o‘lchamini o‘zgartiradi.']],
+['shape','◇',['Форма','Shakl'],['«Форма»: коснитесь фигуры — она станет кривой с узлами. Тяните узел — меняется форма, тяните «ручку» — изгибается линия.','«Shakl»: shaklga tegining — u tugunli egri chiziqqa aylanadi. Tugunni tortsangiz shakl o‘zgaradi, «dasta»ni tortsangiz chiziq egiladi.']],
+['erase','🧽',['Ластик','O‘chirg‘ich'],['«Ластик»: проведите пальцем по объектам — они удаляются. Быстро убрать ошибки.','«O‘chirg‘ich»: barmoq bilan obyektlar ustidan suring — ular o‘chadi. Xatolarni tez o‘chirish uchun.']],
+['rect','▭',['Прямоугольник','To‘rtburchak'],['«Прямоугольник»: проведите по диагонали. Основа кнопок, рамок и фонов.','«To‘rtburchak»: diagonal bo‘ylab suring. Tugma, ramka va fonlar asosi.']],
+['ell','◯',['Эллипс','Ellips'],['«Эллипс»: проведите по диагонали — овал вписывается в этот прямоугольник. Основа кругов и колец.','«Ellips»: diagonal bo‘ylab suring — oval shu to‘rtburchakka sig‘adi. Doira va halqalar asosi.']],
+['poly','⬡',['Многоугольник','Ko‘pburchak'],['«Многоугольник»: проведите по диагонали — получится шестиугольник. Для значков и сот.','«Ko‘pburchak»: suring — oltiburchak chiziladi. Belgilar va chumoli uyalari uchun.']],
+['star','★',['Звезда','Yulduz'],['«Звезда»: проведите по диагонали. Для значков, наград и акцентов.','«Yulduz»: diagonal bo‘ylab suring. Belgilar, mukofot va urg‘ular uchun.']],
+['line','╱',['Линия','Chiziq'],['«Линия»: проведите от начала до конца. Толщину задаёт «Толщина».','«Chiziq»: boshidan oxirigacha suring. Qalinlikni «Qalinlik» belgilaydi.']],
+['pen','✎',['От руки','Erkin chizish'],['«От руки» (Freehand): рисуйте пальцем как карандашом. Для эскизов и подписей.','«Erkin chizish» (Freehand): barmoq bilan qalamdek chizing. Eskiz va imzolar uchun.']],
+['tri','▲',['Треугольник','Uchburchak'],['«Треугольник»: проведите по диагонали. Основа крыш, гор, стрелок и пирамид.','«Uchburchak»: diagonal bo‘ylab suring. Tom, tog‘, strelka va piramida asosi.']],
+['arrow','➜',['Стрелка','Strelka'],['«Стрелка»: проведите по диагонали. Для схем, указателей и инструкций.','«Strelka»: diagonal bo‘ylab suring. Sxema, ko‘rsatkich va yo‘riqnomalar uchun.']],
+['heart','♥',['Сердце','Yurak'],['«Сердце»: проведите по диагонали. Для открыток, значков и логотипов.','«Yurak»: diagonal bo‘ylab suring. Otkritka, belgi va logotiplar uchun.']],
+['spi','🌀',['Спираль','Spiral'],['«Спираль»: проведите по диагонали — получится завиток. Для узоров и декоративных эффектов.','«Spiral»: diagonal bo‘ylab suring — o‘ram hosil bo‘ladi. Naqsh va bezaklar uchun.']],
+['bez','✒',['Перо','Qalam'],['«Перо» (кривая Безье): касание — острый угол, касание с протяжкой — плавный изгиб. Двойное касание завершает линию.','«Qalam» (Bezye egri chizig‘i): tegish — o‘tkir burchak, tortib tegish — silliq egrilik. Ikki marta tegish chiziqni tugatadi.']],
+['hand','✋',['Рука','Qo‘l'],['«Рука»: после увеличения 🔍＋ двигайте страницу пальцем, чтобы добраться до нужного места.','«Qo‘l»: 🔍＋ dan so‘ng sahifani barmoq bilan siljiting.']],
+['text','T',['Текст','Matn'],['«Текст»: коснитесь страницы и введите надпись. Размер меняется угловым маркером.','«Matn»: sahifaga tegib yozuv kiriting. O‘lchami burchak markeri bilan o‘zgaradi.']],
+['eye','💧',['Пипетка','Pipetka'],['«Пипетка»: коснитесь объекта — возьмёте его цвет. Он применится к выделенному объекту и к новым.','«Pipetka»: obyektga tegib rangini oling. U tanlangan va yangi obyektlarga qo‘llanadi.']]];
+const PAL=['#000000','#ffffff','#7f7f7f','#c0c0c0','#ff0000','#e4572e','#f4a261','#ffd23f','#fff200','#00a651','#0e8a4a','#17bebb','#00aeef','#2a7fff','#3a3ad6','#8e44ad','#ec008c','#e84393','#8b5a2b','#ffd9b3'];
+const T=(a,b,c,d,e)=>[[a,b],c,d];
+const L=[
+{t:['Знакомство с инструментами','Asboblar bilan tanishuv'],p:k=>[mkS('rect',110,120,110,80,{fill:'#2a7fff'}),mkS('ell',280,120,120,80,{fill:'#e4572e'}),mkS('poly',110,240,110,90,{fill:'#00a651'}),mkS('star',280,240,110,110,{fill:'#ffd23f'}),mkS('tri',110,360,100,90,{fill:'#8e44ad'}),mkS('heart',200,360,90,80,{fill:'#ec008c'}),mkS('arrow',290,360,110,70,{fill:'#17bebb'}),mkS('spi',200,455,100,60,{fill:'none',stroke:'#1b2620',sw:3})].slice(0,[1,2,6,7,8][k]||8),w:['Прежде чем рисовать, узнайте, для чего каждый инструмент. Нажмите на него — внизу появится описание. Весь список всегда в «📚 Справочнике».','Chizishdan oldin har bir asbob nimaga kerakligini bilib oling. Unga tegsangiz, pastda tavsif chiqadi. To‘liq ro‘yxat doim «📚 Ma‘lumotnoma»da.'],s:[
+ [['Откройте «📚 Справочник» вверху и посмотрите, для чего каждый инструмент','Yuqoridagi «📚 Ma‘lumotnoma»ni oching va asboblar nimaga kerakligini ko‘ring'],()=>F.ref,'#rfb'],
+ [['Нажмите «Выбор», «Прямоугольник», «Эллипс»','«Tanlash», «To‘rtburchak», «Ellips»ni bosing'],()=>F.t.pick&&F.t.rect&&F.t.ell],
+ [['Нажмите «Многоугольник», «Звезда», «Треугольник», «Стрелка», «Сердце»','«Ko‘pburchak», «Yulduz», «Uchburchak», «Strelka», «Yurak»ni bosing'],()=>F.t.poly&&F.t.star&&F.t.tri&&F.t.arrow&&F.t.heart],
+ [['Нажмите «Линия», «От руки», «Перо», «Спираль»','«Chiziq», «Erkin chizish», «Qalam», «Spiral»ni bosing'],()=>F.t.line&&F.t.pen&&F.t.bez&&F.t.spi],
+ [['Нажмите «Текст», «Пипетка», «Рука»','«Matn», «Pipetka», «Qo‘l»ni bosing'],()=>F.t.text&&F.t.eye&&F.t.hand]]},
+{t:['Рабочая область','Ish maydoni'],p:k=>k>0?[mkS('rect',200,250,220,140,{fill:'#e4572e'})]:[],w:['Белый лист — страница, всё рисуется на ней. Внизу панель инструментов, палитра цветов и свойства объекта.','Oq varaq — sahifa, hamma narsa shu yerda chiziladi. Pastda asboblar, ranglar palitrasi va obyekt xususiyatlari.'],s:[
+ [['Выберите инструмент «Прямоугольник»','«To‘rtburchak» asbobini tanlang'],()=>F.t.rect,'.tb[data-t=rect]'],
+ [['Проведите пальцем по странице по диагонали','Sahifada diagonal bo‘ylab suring'],()=>S.length>=1],
+ [['Выберите «Выбор» (стрелка)','«Tanlash» (strelka)ni tanlang'],()=>F.t.pick,'.tb[data-t=pick]'],
+ [['Коснитесь прямоугольника — появятся маркеры','To‘rtburchakka tegining — markerlar chiqadi'],()=>SEL!=null]]},
+{t:['Базовые фигуры','Asosiy shakllar'],p:k=>[mkS('ell',120,150,130,90,{fill:'#2a7fff'}),mkS('poly',280,150,130,110,{fill:'#00a651'}),mkS('star',120,340,150,150,{fill:'#ffd23f'}),mkS('line',280,340,130,110,{stroke:'#1b2620',sw:4,fill:'none'})].slice(0,k+1),w:['Любой логотип собирается из простых форм. Научитесь их рисовать — научитесь строить сложное.','Har qanday logo oddiy shakllardan yig‘iladi. Ularni chizishni o‘rgansangiz, murakkabini ham qilasiz.'],s:[
+ [['Нарисуйте эллипс','Ellips chizing'],()=>has('ell'),'.tb[data-t=ell]'],[['Нарисуйте многоугольник','Ko‘pburchak chizing'],()=>has('poly'),'.tb[data-t=poly]'],
+ [['Нарисуйте звезду','Yulduz chizing'],()=>has('star'),'.tb[data-t=star]'],[['Нарисуйте линию','Chiziq chizing'],()=>has('line'),'.tb[data-t=line]']]},
+{t:['Выбор, перемещение, размер','Tanlash, ko‘chirish, o‘lcham'],p:k=>k>2?[]:[mkS('rect',k>0?270:130,k>0?340:170,k>1?170:100,k>1?120:70,{fill:'#e4572e'})],w:['Основа работы в CorelDRAW — выбрать объект и изменить его. Угловой маркер меняет размер, пропорции задаёт ваш жест.','CorelDRAW’dagi ishning asosi — obyektni tanlab o‘zgartirish. Burchak markeri o‘lchamni o‘zgartiradi.'],s:[
+ [['Нарисуйте любую фигуру','Istalgan shakl chizing'],()=>S.length>=1],
+ [['С «Выбор» перетащите фигуру в другое место','«Tanlash» bilan shaklni boshqa joyga suring'],()=>F.moved,'.tb[data-t=pick]'],
+ [['Потяните угловой маркер','Burchak markerini torting'],()=>F.resized],
+ [['Нажмите «Удалить»','«O‘chirish»ni bosing'],()=>F.deleted,'[data-a=del]']]},
+{t:['Заливка и контур','To‘ldirish va kontur'],p:k=>[mkS('rect',200,250,220,150,{fill:k>0?'#2a7fff':'#c0c0c0',stroke:k>1?'#ec008c':'#1b2620',sw:k>2?12:2})],w:['Заливка — цвет внутри фигуры, контур — её граница. Переключатель слева от палитры выбирает, что красить. У линии есть только контур.','To‘ldirish — shakl ichidagi rang, kontur — chegarasi. Palitra yonidagi tugma nimani bo‘yashni tanlaydi. Chiziqda faqat kontur bor.'],s:[
+ [['Нарисуйте фигуру и выделите её','Shakl chizib, tanlang'],()=>SEL!=null],
+ [['Нажмите цвет в палитре — изменится заливка','Palitradan rang bosing — to‘ldirish o‘zgaradi'],()=>F.fill,'#pal'],
+ [['Нажмите «Контур» и выберите другой цвет','«Kontur»ni bosib, boshqa rang tanlang'],()=>F.stroke,'[data-g=stroke]'],
+ [['Поставьте «Толщина» 8 или больше','«Qalinlik»ni 8 yoki undan ko‘p qiling'],()=>F.sw,'#sw']]},
+{t:['От руки и пипетка','Erkin chizish va pipetka'],p:k=>[mkS('pen',200,200,260,180,{fill:'none',stroke:'#3a3ad6',sw:4,pts:[[0,.8],[.25,.1],[.5,.9],[.75,.2],[1,.7]]}),...(k>0?[mkS('ell',200,380,120,80,{fill:k>1?'#e4572e':'#c0c0c0'})]:[])],w:['«От руки» рисует как карандаш — для эскизов. Пипетка берёт цвет с другого объекта, чтобы цвета совпадали точно.','«Erkin chizish» qalamdek chizadi — eskizlar uchun. Pipetka boshqa obyektdan rangni oladi — ranglar aynan bir xil bo‘ladi.'],s:[
+ [['Нарисуйте кривую инструментом «От руки»','«Erkin chizish» bilan egri chiziq torting'],()=>has('pen'),'.tb[data-t=pen]'],
+ [['Нарисуйте цветную фигуру','Rangli shakl chizing'],()=>S.some(s=>s.type!=='pen'&&s.fill!=='#e4572e'&&s.fill!=='none')||S.length>=2],
+ [['Выберите «Пипетка» и коснитесь фигуры','«Pipetka»ni tanlab, shaklga tegining'],()=>F.eye,'.tb[data-t=eye]']]},
+{t:['Копии, порядок, поворот','Nusxa, tartib, burish'],p:k=>{const a=mkS('rect',170,210,150,110,{fill:'#2a7fff'}),b=mkS('rect',k>2?200:220,k>2?250:260,150,110,{fill:'#e4572e',rot:k>1?15:0});return k>0?[b,a]:[a,b]},w:['Объекты лежат слоями: нарисованный позже закрывает ранний. Копия экономит время, «Отмена» исправляет ошибку.','Obyektlar qatlam bo‘lib yotadi: keyin chizilgani oldingisini yopadi. Nusxa vaqtni tejaydi, «Bekor» xatoni tuzatadi.'],s:[
+ [['Нарисуйте фигуру и нажмите «Копия»','Shakl chizib, «Nusxa»ni bosing'],()=>F.dup,'[data-a=dup]'],
+ [['Нажмите «Наверх»','«Oldinga»ni bosing'],()=>F.front,'[data-a=front]'],
+ [['Нажмите «Поворот 15°»','«Burish 15°»ni bosing'],()=>F.rot,'[data-a=rot]'],
+ [['Нажмите «По центру»','«Markazga»ni bosing'],()=>F.ctr,'[data-a=ctr]'],
+ [['Нажмите «Отмена»','«Bekor»ni bosing'],()=>F.undo,'[data-a=undo]']]},
+{t:['Текст','Matn'],p:k=>[mkS('text',200,250,k>1?192:96,k>1?80:40,{text:'Logo',fill:k>0?'#e4572e':'#1b2620'})],w:['Текст — такой же объект: его двигают, красят и масштабируют. Для текста «Заливка» — цвет букв.','Matn ham obyekt: uni ko‘chirish, bo‘yash va kattalashtirish mumkin. Matn uchun «To‘ldirish» — harflar rangi.'],s:[
+ [['Выберите «Текст», коснитесь страницы, введите надпись','«Matn»ni tanlab, sahifaga tegib yozing'],()=>has('text'),'.tb[data-t=text]'],
+ [['Выделите текст и нажмите цвет в палитре','Matnni tanlab, palitradan rang bosing'],()=>F.fill&&SEL!=null&&obj(SEL).type==='text'],
+ [['Увеличьте текст угловым маркером','Matnni burchak markeri bilan kattalashtiring'],()=>F.resized]]},
+{t:['Итог: ваш логотип','Yakuniy: logotipingiz'],p:k=>[mkS('rect',200,250,300,300,{fill:'#14213d'}),...(k>0?[mkS('star',200,230,180,180,{fill:'#ffd23f'})]:[]),...(k>1?[mkS('text',200,400,144,60,{text:'LOGO',fill:'#ec008c'})]:[])],w:['Соберём всё вместе: фон, фигура и надпись — так выглядит простой логотип.','Hammasini birlashtiramiz: fon, shakl va yozuv — oddiy logotip shunday bo‘ladi.'],s:[
+ [['Нарисуйте прямоугольник-фон','To‘rtburchak-fon chizing'],()=>has('rect')],
+ [['Добавьте звезду или эллипс поверх','Ustiga yulduz yoki ellips qo‘shing'],()=>has('star')||has('ell')],
+ [['Добавьте текст','Matn qo‘shing'],()=>has('text')],
+ [['Используйте минимум 3 разных цвета заливки','Kamida 3 xil to‘ldirish rangi ishlating'],()=>new Set(S.map(s=>s.fill)).size>=3]]},
+{t:['Творчество: абстракция','Ijod: abstraksiya'],p:k=>k<1?[]:[mkS('rect',200,250,400,500,{fill:'#14213d'}),mkS('ell',140,200,200,200,{fill:'#ec008c',op:k>1?.4:.9}),mkS('star',270,300,200,200,{fill:'#ffd23f',op:k>1?.4:.9}),mkS('poly',200,380,180,120,{fill:k>2?'#17bebb':'#2a7fff',op:.7})],w:['Абстракция — композиция из форм, цвета и прозрачности без «предмета». Так тренируют глаз: баланс, ритм, сочетание цветов. Прозрачность позволяет наложенным фигурам смешиваться.','Abstraksiya — shakl, rang va shaffoflikdan tuzilgan kompozitsiya. Ko‘zni mashq qildiradi: muvozanat, ritm, ranglar uyg‘unligi. Shaffoflik ustma-ust shakllarni aralashtiradi.'],s:[
+ [['Нажмите «✨ Абстракция» — программа соберёт композицию','«✨ Abstraksiya»ni bosing — dastur kompozitsiya yaratadi'],()=>F.abs,'[data-a=abs]'],
+ [['Выделите фигуру и поставьте «Прозрачность» 40%','Shaklni tanlab, «Shaffoflik»ni 40% qiling'],()=>F.op,'#op'],
+ [['Перекрасьте любую фигуру цветом из палитры','Istalgan shaklni palitradan rang bilan bo‘yang'],()=>F.fill,'#pal'],
+ [['Поверните фигуру и добавьте свою подпись текстом','Shaklni buring va matn bilan imzo qo‘ying'],()=>F.rot&&has('text'),'[data-a=rot]']]},
+{t:['Узор: цветок из лепестков','Naqsh: gulbarglardan gul'],p:k=>{const a=mkS('ell',200,k>2?150:250,50,120,{fill:k>0?'url(#g4)':'#e4572e'});return k>3?[a,...spin(a,30,11,PG,1)]:[a]},w:['Секрет узора — один лепесток, повёрнутый вокруг центра страницы. «Трансформация» делает копии с поворотом за секунду (в CorelDRAW это окно «Преобразования → Поворот»).','Naqsh siri — bitta gulbarg sahifa markazi atrofida buriladi. «Transformatsiya» soniyada burilgan nusxalar yaratadi (CorelDRAW’da «Transformatsiya → Burish»).'],s:[
+ [['Нарисуйте узкий эллипс-лепесток (высота вдвое больше ширины)','Tor ellips-gulbarg chizing (balandligi eniga nisbatan 2 baravar)'],()=>E().some(s=>s.h>s.w*1.8),'.tb[data-t=ell]'],
+ [['Залейте его градиентом розовый–белый или оранжевый–белый','Uni pushti–oq yoki to‘q sariq–oq gradiyent bilan to‘ldiring'],()=>E().some(s=>/g[45]/.test(s.fill)),'#pal'],
+ [['Нажмите «🔄 Трансформация» — появится красный крест центра страницы','«🔄 Transformatsiya»ni bosing — sahifa markazida qizil xoch paydo bo‘ladi'],()=>XO,'#xbtn'],
+ [['Перетащите лепесток вверх, чтобы его центр был над крестом','Gulbargni xoch ustiga, yuqoriga suring'],()=>E().some(s=>Math.abs(mid(s).x-200)<25&&mid(s).y>80&&mid(s).y<200)],
+ [['Центр: страницы, угол 30, копий 11 — «Применить»','Markaz: sahifa, burchak 30, nusxa 11 — «Qo‘llash»'],()=>F.xfn>=11,'#xgo']]},
+{t:['Узор: вихрь','Naqsh: girdob'],p:k=>{const a=mkS('ell',200,k>2?140:250,60,150,{rot:k>0?30:0,fill:k>1?'url(#g4)':'#e4572e',op:k>1?.4:1});return k>3?[a,...spin(a,15,23,PG,1)]:[a]},w:['Если лепесток сначала наклонить, а потом вращать по кругу, получится вихрь. Прозрачность задаём до копирования — тогда она будет у всех копий.','Gulbarg avval qiyshaytirilsa, aylantirilganda girdob hosil bo‘ladi. Shaffoflikni nusxalashdan oldin belgilang — hamma nusxada bo‘ladi.'],s:[
+ [['Нарисуйте эллипс-лепесток','Ellips-gulbarg chizing'],()=>E().length>=1],
+ [['Откройте «Трансформацию»: угол 30, копий 0, центр объекта — «Применить»','«Transformatsiya»: burchak 30, nusxa 0, markaz obyekt — «Qo‘llash»'],()=>F.xfr,'#xbtn'],
+ [['Градиент из палитры и «Прозрачность» 40%','Palitradan gradiyent va «Shaffoflik» 40%'],()=>E().some(s=>/g[45]/.test(s.fill)&&s.op<=.5),'#op'],
+ [['Поставьте лепесток над крестом центра','Gulbargni markaz xochi ustiga qo‘ying'],()=>E().some(s=>Math.abs(mid(s).x-200)<30&&mid(s).y<200)],
+ [['Угол 15, копий 23, центр страницы — «Применить»','Burchak 15, nusxa 23, markaz sahifa — «Qo‘llash»'],()=>F.xfn>=23,'#xgo']]},
+{t:['Узор: спирограф','Naqsh: spirograf'],p:k=>{const a=mkS('ell',k>1?270:200,250,200,90,{fill:k>0?'none':'#e4572e',sw:k>0?1:0});return k>2?[a,...spin(a,10,35,PG,1)]:[a]},w:['Контурные эллипсы без заливки, смещённые от центра и вращаемые по кругу, дают тонкое кружево.','To‘ldirishsiz kontur ellipslar markazdan siljitilib aylantirilsa, nozik to‘r hosil bo‘ladi.'],s:[
+ [['Нарисуйте широкий эллипс','Keng ellips chizing'],()=>E().some(s=>s.w>s.h*1.4)],
+ [['Заливка → «✕» (без заливки), контур тонкий','To‘ldirish → «✕» (yo‘q), kontur ingichka'],()=>E().some(s=>s.fill==='none'),'#pal'],
+ [['Сдвиньте эллипс вправо от креста центра','Ellipsni markaz xochidan o‘ngga suring'],()=>E().some(s=>s.fill==='none'&&Math.hypot(mid(s).x-200,mid(s).y-250)>50)],
+ [['Угол 10, копий 35, центр страницы — «Применить»','Burchak 10, nusxa 35, markaz sahifa — «Qo‘llash»'],()=>F.xfn>=35,'#xgo']]},
+{t:['Морская звезда','Dengiz yulduzi'],p:k=>{const b=mkS('star',200,250,300,300,{fill:k>0?'#00a651':'#e4572e',sw:2});return k<2?[b]:[b,mkS('star',k>3?200:k>2?232:218,k>3?250:k>2?282:268,k>2?150:300,k>2?150:300,{fill:k>2?'#000000':'#00a651',sw:2,rot:k>4?36:0})]},w:['Две звезды в одном центре: большая зелёная и маленькая чёрная, повёрнутая на 36°, — получаются «грани».','Bir markazda ikki yulduz: katta yashil va 36° burilgan kichik qora — «qirralar» hosil bo‘ladi.'],s:[
+ [['Нарисуйте звезду','Yulduz chizing'],()=>has('star'),'.tb[data-t=star]'],
+ [['Залейте её зелёным','Uni yashil bilan to‘ldiring'],()=>ST().some(s=>s.fill==='#00a651'||s.fill==='#0e8a4a')],
+ [['«По центру», затем «Копия»','«Markazga», so‘ng «Nusxa»'],()=>F.ctr&&F.dup],
+ [['Залейте копию чёрным и уменьшите угловым маркером','Nusxani qora qiling va burchak markeri bilan kichraytiring'],()=>BK()&&ST().some(s=>s!==BK()&&s.w>BK().w)],
+ [['Снова «По центру»','Yana «Markazga»'],()=>BK()&&Math.hypot(mid(BK()).x-200,mid(BK()).y-250)<4],
+ [['«Трансформация»: угол 36, копий 0, центр объекта','«Transformatsiya»: burchak 36, nusxa 0, markaz obyekt'],()=>BK()&&Math.abs((BK().rot||0)-36)<1,'#xbtn']]},
+{t:['Восьмиконечная звезда','Sakkiz qirrali yulduz'],p:k=>{const a=mkS('rect',k>1?200:140,k>1?250:180,220,220,{fill:k>0?'url(#g1)':'#e4572e'});return k>2?[a,{...a,id:++id,rot:k>3?45:0,x:a.x+(k>3?0:14)}]:[a]},w:['Два квадрата с общим центром, один повёрнут на 45°, — классическая восьмиконечная звезда. Градиент делает её объёмной.','Umumiy markazli ikki kvadrat, biri 45° burilgan — klassik sakkiz qirrali yulduz. Gradiyent hajm beradi.'],s:[
+ [['Нарисуйте квадрат (стороны равны)','Kvadrat chizing (tomonlari teng)'],()=>RC().some(s=>Math.abs(s.w-s.h)<15&&s.w>120),'.tb[data-t=rect]'],
+ [['Залейте градиентом','Gradiyent bilan to‘ldiring'],()=>RC().some(s=>/g\d/.test(s.fill)),'#pal'],
+ [['«По центру»','«Markazga»'],()=>RC().some(s=>Math.hypot(mid(s).x-200,mid(s).y-250)<4),'[data-a=ctr]'],
+ [['Сделайте «Копию»','«Nusxa» qiling'],()=>RC().length>=2,'[data-a=dup]'],
+ [['«Трансформация»: угол 45, копий 0, центр объекта','«Transformatsiya»: burchak 45, nusxa 0, markaz obyekt'],()=>RC().some(s=>Math.abs((s.rot||0)-45)<1),'#xbtn']]},
+{t:['Солнце из зигзага','Zigzag quyosh'],p:k=>{const a=mkS('star',k>0?200:150,k>0?250:200,360,360,{fill:k>1?'none':'#e4572e',stroke:'#e4572e',sw:k>1?1.5:0});return k>2?[a,...spin(a,7,20,.96,null)]:[a]},w:['Копии с поворотом и уменьшением масштаба на каждом шаге складываются в узор «солнце» — это похоже на эффект Blend в CorelDRAW.','Har qadamda burilgan va kichraygan nusxalar «quyosh» naqshini hosil qiladi — CorelDRAW’dagi Blend effektiga o‘xshaydi.'],s:[
+ [['Нарисуйте большую звезду','Katta yulduz chizing'],()=>ST().some(s=>s.w>250)],
+ [['Нажмите «По центру»','«Markazga»ni bosing'],()=>ST().some(s=>Math.hypot(mid(s).x-200,mid(s).y-250)<4),'[data-a=ctr]'],
+ [['Заливка «✕», тонкий оранжевый контур','To‘ldirish «✕», ingichka to‘q sariq kontur'],()=>ST().some(s=>s.fill==='none'&&s.sw>0)],
+ [['Угол 7, копий 20, масштаб 96, центр объекта — «Применить»','Burchak 7, nusxa 20, masshtab 96, markaz obyekt — «Qo‘llash»'],()=>F.xfn>=20&&F.xfs,'#xgo']]},
+{t:['Кольцо-орнамент','Halqa-naqsh'],p:k=>{const r=mkS('rect',200,110,30,30,{fill:'#ffd23f'});return[mkS('rect',200,250,400,500,{fill:'#5a0f14'}),mkS('ell',200,250,300,300,{fill:'none',sw:12,stroke:'#ffd23f'}),...(k>0?[r]:[]),...(k>1?spin(r,30,11,PG,1):[])]},w:['Кольцо и повторяющиеся элементы вокруг него — основа греческих и восточных орнаментов.','Halqa va uning atrofida takrorlanuvchi elementlar — yunon va sharq naqshlarining asosi.'],s:[
+ [['Нарисуйте большой круг, без заливки, контур 12','Katta doira chizing, to‘ldirishsiz, kontur 12'],()=>E().some(s=>s.w>200&&s.fill==='none'&&s.sw>=8)],
+ [['Нарисуйте маленький квадрат на кольце сверху','Halqa ustiga kichik kvadrat chizing'],()=>S.some(s=>s.type==='rect'&&s.w<80&&Math.hypot(mid(s).x-200,mid(s).y-250)>80)],
+ [['Угол 30, копий 11, центр страницы — «Применить»','Burchak 30, nusxa 11, markaz sahifa — «Qo‘llash»'],()=>F.xfn>=11&&cnt('rect')>=12,'#xgo']]},
+{t:['Группа и выравнивание','Guruh va tekislash'],p:k=>{const X=k>2?240:k>1?200:0;return[mkS('ell',X||120,130,100,100,{fill:'#2a7fff'}),mkS('rect',X||270,250,120,80,{fill:'#e4572e'}),mkS('star',X||160,380,110,110,{fill:'#ffd23f'})]},w:['Профессионалы работают со многими фигурами сразу: выделяют несколько, выстраивают по одной линии и связывают в группу, чтобы двигать как одно целое. Так логотипы получаются ровными.','Mutaxassislar ko‘p shakl bilan birga ishlaydi: bir nechtasini tanlab, bir chiziqqa tekislab, guruhga bog‘laydi. Shunda logotip tekis chiqadi.'],s:[
+ [['Нарисуйте три фигуры','Uchta shakl chizing'],()=>S.length>=3],
+ [['Включите «☑ Несколько» и коснитесь фигур по очереди','«☑ Bir nechta»ni yoqib, shakllarga ketma-ket tegining'],()=>MS.length>=2,'[data-a=ms]'],
+ [['Нажмите ⬌: фигуры выстроятся по центру','⬌ni bosing: shakllar markazga tekislanadi'],()=>F.align,'[data-a=alX]'],
+ [['Нажмите «Группа», выключите «☑ Несколько» и перетащите одну — поедут все','«Guruh»ni bosing, «☑ Bir nechta»ni o‘chiring va bittasini suring — hammasi ketadi'],()=>S.some(s=>s.g)&&F.moved,'[data-a=grp]']]},
+{t:['Вычитание: полумесяц','Ayirish: yarim oy'],p:k=>k>2?[mkS('path',200,250,110,200,{d:'M110 0A100 100 0 0 0 110 200A130 130 0 0 1 110 0Z',ow:110,oh:200,fill:'#ffd23f',sw:2})]:[mkS('ell',170,250,200,200,{fill:'#ffd23f'}),...(k>0?[mkS('ell',240,230,170,170,{fill:'#2a7fff',op:.6})]:[])],w:['«Объединить / Вычесть / Пересечь» — главные операции логотипистов. «Вычесть» откусывает от первой фигуры то, что перекрыто второй. Первой касайтесь той фигуры, которую оставляете.','«Birlashtirish / Ayirish / Kesishma» — logotip ustalarining asosiy amallari. «Ayirish» birinchi shakldan ikkinchisi yopgan qismni kesib oladi. Birinchi bo‘lib qoladigan shaklga tegining.'],s:[
+ [['Нарисуйте большой круг','Katta doira chizing'],()=>E().some(s=>s.w>150)],
+ [['Нарисуйте второй круг поменьше правее и выше','Ikkinchi kichikroq doirani o‘ngroq va yuqoriroq chizing'],()=>E().length>=2],
+ [['Включите «☑ Несколько»: сначала большой круг, потом малый','«☑ Bir nechta»: avval katta, so‘ng kichik doira'],()=>MS.length>=2,'[data-a=ms]'],
+ [['Нажмите «⊖ Вычесть» — получится полумесяц','«⊖ Ayirish»ni bosing — yarim oy hosil bo‘ladi'],()=>F.sub&&S.some(s=>s.type==='path'),'[data-a=sub]']]},
+{t:['Проект: логотип «Луна»','Loyiha: «Oy» logotipi'],p:k=>[mkS('rect',200,250,400,500,{fill:'#14213d'}),mkS('path',k>2?150:130,250,110,200,{d:'M110 0A100 100 0 0 0 110 200A130 130 0 0 1 110 0Z',ow:110,oh:200,fill:'#ffd23f'}),...(k>0?[mkS('star',k>2?250:270,k>2?230:200,80,80,{fill:'#ffd23f'})]:[]),...(k>1?[mkS('text',200,400,115,48,{text:'MOON',fill:'#ffffff'})]:[])],w:['Итоговый проект: логотип из полумесяца, звезды и надписи. Выравнивание делает его аккуратным, а экспорт — готовым для заказчика.','Yakuniy loyiha: yarim oy, yulduz va yozuvdan logotip. Tekislash uni tartibli qiladi, eksport esa buyurtmachiga tayyor qiladi.'],s:[
+ [['Сделайте полумесяц (круг минус круг)','Yarim oy yasang (doira minus doira)'],()=>S.some(s=>s.type==='path')],
+ [['Добавьте звезду рядом','Yoniga yulduz qo‘shing'],()=>has('star')],
+ [['Добавьте надпись текстом','Matn bilan yozuv qo‘shing'],()=>has('text')],
+ [['Выделите всё через «☑ Несколько» и нажмите ⬌','«☑ Bir nechta» bilan hammasini tanlab, ⬌ni bosing'],()=>F.align&&MS.length>=2,'[data-a=alX]'],
+ [['Нажмите «⬇ PNG» и сохраните работу','«⬇ PNG»ni bosib, ishni saqlang'],()=>F.exp,'[data-a=png]']]},
+{t:['Перо: кривая Безье','Qalam: Bezye egri chizig‘i'],p:k=>k<1?[]:[mkS('curve',200,250,280,200,{fill:k>3?'#ffd23f':'none',stroke:'#3a3ad6',sw:4,closed:k>3,nodes:cvN([[0,1],[.5,0],[1,1]],k>1)})],w:['«Перо» ставит узлы: касание — острый угол, касание с протяжкой — плавный изгиб (ручка задаёт форму). Так рисуют логотипы, буквы и силуэты. Двойное касание завершает кривую.','«Qalam» tugunlar qo‘yadi: tegish — o‘tkir burchak, tortib tegish — silliq egrilik (dasta shaklni belgilaydi). Logotip, harf va siluetlar shunday chiziladi. Ikki marta tegish egri chiziqni tugatadi.'],s:[
+ [['Выберите «Перо»','«Qalam»ni tanlang'],()=>F.t.bez,'.tb[data-t=bez]'],
+ [['Поставьте 3 и больше точек касанием','Teginib 3 va undan ko‘p nuqta qo‘ying'],()=>S.some(s=>s.type==='curve'&&s.nodes.length>=3)],
+ [['Одну точку поставьте с протяжкой — получится плавный изгиб','Bitta nuqtani tortib qo‘ying — silliq egrilik hosil bo‘ladi'],()=>S.some(s=>s.type==='curve'&&s.nodes.some(n=>n.sm))],
+ [['Завершите двойным касанием','Ikki marta tegib tugating'],()=>S.some(s=>s.type==='curve'&&!s.A&&s.nodes.length>=3)],
+ [['«🧩 Узлы» → «⭘ Замкнуть»: линия станет фигурой','«🧩 Tugun» → «⭘ Yopish»: chiziq shaklga aylanadi'],()=>S.some(s=>s.type==='curve'&&s.closed),'[data-a=ncl]']]},
+{t:['Форма: узлы и ручки','Shakl: tugun va dastalar'],p:k=>{if(k<1)return[mkS('ell',200,250,200,200,{fill:'#17bebb'})];const y=k>1?-.3:0,t=k>4?{p:[.5,y],a:[.5,y],b:[.5,y],sm:false}:{p:[.5,y],a:[.224,y],b:[.776,y],sm:true};return[mkS('curve',200,250,200,200,{fill:'#17bebb',stroke:'#0b3d3a',sw:2,closed:true,nodes:[t,{p:[1,.5],a:[1,.224],b:[1,.776],sm:true},{p:[.5,1],a:[.776,1],b:[.224,1],sm:true},{p:[0,.5],a:[0,.776],b:[0,.224],sm:true}]})]},w:['«Форма» (Shape) — главный инструмент профессионала: он превращает любую фигуру в кривую с узлами. Узел можно двигать, а «ручки» узла изгибают линию. Так из круга получается капля, из квадрата — логотип.','«Shakl» (Shape) — mutaxassisning asosiy asbobi: u istalgan shaklni tugunli egri chiziqqa aylantiradi. Tugunni surish, dastalar bilan chiziqni egish mumkin. Doiradan tomchi, kvadratdan logotip chiqadi.'],s:[
+ [['Нарисуйте эллипс','Ellips chizing'],()=>has('ell')||has('curve'),'.tb[data-t=ell]'],
+ [['Выберите «Форма» и коснитесь эллипса — он станет кривой с узлами','«Shakl»ni tanlab, ellipsga tegining — u tugunli egri chiziqqa aylanadi'],()=>has('curve'),'.tb[data-t=shape]'],
+ [['Коснитесь узла (квадрата) и потяните вверх — получится капля','Tugunga (kvadrat) tegib, yuqoriga torting — tomchi hosil bo‘ladi'],()=>F.node],
+ [['Потяните синюю «ручку» (кружок) выбранного узла — линия изогнётся','Tanlangan tugunning ko‘k «dasta»sini (doira) torting — chiziq egiladi'],()=>F.hnd],
+ [['«🧩 Узлы» → «＋ Узел»: добавьте новый узел','«🧩 Tugun» → «＋ Tugun»: yangi tugun qo‘shing'],()=>F.nadd,'[data-a=nadd]'],
+ [['«◠ Плавный / острый»: сделайте узел острым — получится угол','«◠ Silliq / o‘tkir»: tugunni o‘tkir qiling — burchak chiqadi'],()=>F.nsm,'[data-a=nsm]']]},
+{t:['Проект: визитка','Loyiha: vizitka'],p:k=>[mkS('rect',200,250,400,500,{fill:'#dfe4e1'}),mkS('rect',200,250,300,170,{fill:'#ffffff',stroke:'#c0c0c0',sw:1}),...(k>0?[mkS('rect',70,250,20,170,{fill:'#0e8a4a'})]:[]),...(k>1?[mkS('text',215,205,158,24,{text:'Ali Valiyev',fill:'#17201b'})]:[]),...(k>2?[mkS('rect',215,245,150,6,{fill:'#9aab9f'}),mkS('rect',215,267,110,6,{fill:'#9aab9f'}),mkS('rect',215,289,130,6,{fill:'#9aab9f'})]:[])],w:['Визитка — самый частый заказ в типографии. Стандартный размер 90×50 мм, то есть ширина примерно в 1,8 раза больше высоты. Сделайте карточку, цветную полосу, имя и контакты.','Vizitka — bosmaxonadagi eng ko‘p buyurtma. Standart o‘lcham 90×50 mm, ya’ni eni balandligidan taxminan 1,8 baravar katta. Karta, rangli chiziq, ism va aloqa ma’lumotlarini yasang.'],s:[
+ [['Нарисуйте карточку: широкий прямоугольник (ширина примерно в 1,8 раза больше высоты)','Kartani chizing: keng to‘rtburchak (eni balandligidan taxminan 1,8 baravar katta)'],()=>RC().some(s=>s.w>230&&s.w/s.h>1.5&&s.w/s.h<2.2),'.tb[data-t=rect]'],
+ [['Добавьте узкую цветную полосу слева','Chap tomonga tor rangli chiziq qo‘shing'],()=>RC().some(s=>s.w<50&&s.h>100)],
+ [['Напишите имя текстом','Ismni matn bilan yozing'],()=>has('text'),'.tb[data-t=text]'],
+ [['Добавьте три тонкие линии для контактов (линии или узкие прямоугольники)','Aloqa uchun uchta ingichka chiziq qo‘shing (chiziq yoki tor to‘rtburchak)'],()=>S.filter(s=>s.type==='line'||(s.type==='rect'&&s.h<14&&s.w>60)).length>=3],
+ [['Сохраните: «💾 Файл» → «⬇ PNG»','Saqlang: «💾 Fayl» → «⬇ PNG»'],()=>F.exp,'[data-a=png]']]},
+{t:['Проект: вывеска','Loyiha: peshtaxta'],p:k=>[mkS('rect',200,250,400,500,{fill:'#cfe8f7'}),mkS('rect',200,200,330,110,{fill:'#14213d',stroke:k>0?'#ffd23f':'#14213d',sw:k>0?6:0}),...(k>1?[mkS('text',200,200,168,40,{text:'MAGAZIN',fill:'#ffd23f'})]:[]),...(k>3?[mkS('rect',90,330,14,100,{fill:'#555555'}),mkS('rect',310,330,14,100,{fill:'#555555'})]:[])],w:['Вывеска должна быть читаемой издалека: контрастные цвета, крупный текст, текст строго по центру. Это основа любой наружной рекламы.','Peshtaxta uzoqdan o‘qilishi kerak: kontrast ranglar, katta matn, matn aniq o‘rtada. Bu har qanday tashqi reklamaning asosi.'],s:[
+ [['Нарисуйте широкий тёмный прямоугольник — вывеску','Keng to‘q to‘rtburchak — peshtaxtani chizing'],()=>RC().some(s=>s.w>280&&s.w/s.h>2.2),'.tb[data-t=rect]'],
+ [['Сделайте толстый контур (6 и больше) другого цвета','Boshqa rangdagi qalin kontur (6 va undan ko‘p) qiling'],()=>RC().some(s=>s.sw>=6),'#sw'],
+ [['Добавьте название текстом','Nomini matn bilan qo‘shing'],()=>has('text'),'.tb[data-t=text]'],
+ [['Выберите текст и нажмите ⬌ — он встанет по центру страницы','Matnni tanlab, ⬌ni bosing — u sahifa markaziga turadi'],()=>S.some(s=>s.type==='text'&&Math.abs(mid(s).x-200)<6),'[data-a=alX]'],
+ [['Нарисуйте две узкие стойки под вывеской','Peshtaxta ostiga ikkita tor tayanch chizing'],()=>RC().filter(s=>s.w<40&&s.h>50).length>=2]]},
+{t:['Проект: наклейка','Loyiha: stiker'],p:k=>[mkS('rect',200,250,400,500,{fill:'#f1f1f1'}),mkS('star',200,250,260,260,{fill:'#ffd23f',stroke:k>0?'#e4572e':'#ffd23f',sw:k>0?5:0}),...(k>1?[mkS('text',200,250,115,48,{text:'SALE',fill:'#e4572e'})]:[]),...(k>2?[mkS('star',200,250,300,300,{fill:'none',stroke:'#2a7fff',sw:2})]:[])],w:['Наклейки печатают и вырезают по контуру на плоттере. Поэтому нужен отдельный контур реза — копия формы без заливки, обычно чуть больше рисунка. Его сохраняют в векторе (SVG).','Stikerlar bosiladi va plotterda kontur bo‘ylab kesiladi. Shuning uchun alohida kesish konturi kerak — to‘ldirishsiz shakl nusxasi, odatda rasmdan biroz katta. U vektorda (SVG) saqlanadi.'],s:[
+ [['Нарисуйте большую звезду','Katta yulduz chizing'],()=>ST().some(s=>s.w>200),'.tb[data-t=star]'],
+ [['Контур 5 и больше, другого цвета','Kontur 5 va undan ko‘p, boshqa rangda'],()=>ST().some(s=>s.sw>=5),'#sw'],
+ [['Добавьте текст в центре звезды','Yulduz o‘rtasiga matn qo‘shing'],()=>ST().some(t=>S.some(x=>x.type==='text'&&mid(x).x>t.x&&mid(x).x<t.x+t.w&&mid(x).y>t.y&&mid(x).y<t.y+t.h)),'.tb[data-t=text]'],
+ [['Сделайте контур реза: «Копия» звезды, заливка «✕» (без заливки)','Kesish konturi: yulduzning «Nusxa»si, to‘ldirish «✕» (yo‘q)'],()=>F.dup&&ST().some(s=>s.fill==='none'),'[data-a=dup]'],
+ [['Сохраните «💾 Файл» → «⬇ SVG» — файл для плоттера','«💾 Fayl» → «⬇ SVG»ni saqlang — plotter uchun fayl'],()=>F.exp,'[data-a=svg]']]},
+{t:['Проект: принт на футболке','Loyiha: futbolkadagi nusxa'],p:k=>[mkS('rect',200,250,400,500,{fill:'#eef0ee'}),...(k<2?[mkS('rect',200,260,170,220,{fill:'#2a7fff'}),...(k>0?[mkS('rect',108,170,50,70,{fill:'#2a7fff'}),mkS('rect',292,170,50,70,{fill:'#2a7fff'})]:[])]:[mkS('path',200,235,240,200,{d:'M30 0L0 40L30 70L50 55L50 160L150 160L150 55L170 70L200 40L170 0L135 0Q100 30 65 0Z',ow:200,oh:160,fill:'#2a7fff',sw:2})]),...(k>2?[mkS('star',200,250,70,70,{fill:'#ffd23f'})]:[]),...(k>3?[mkS('text',200,310,77,32,{text:'STAR',fill:'#ffffff'})]:[])],w:['Принт на одежде состоит из силуэта футболки и рисунка на груди. Силуэт собирают из простых фигур и объединяют операцией «Объединить» в один контур — так делают и профессионалы.','Kiyimdagi nusxa futbolka silueti va ko‘krakdagi rasmdan iborat. Siluet oddiy shakllardan yig‘iladi va «Birlashtirish» amali bilan bitta konturga birlashtiriladi — mutaxassislar ham shunday qiladi.'],s:[
+ [['Корпус футболки: большой прямоугольник','Futbolka tanasi: katta to‘rtburchak'],()=>RC().some(s=>s.w>170&&s.h>200),'.tb[data-t=rect]'],
+ [['Два рукава: два узких прямоугольника по бокам сверху','Ikki yeng: tepada yon tomonlarda ikkita tor to‘rtburchak'],()=>RC().length>=3],
+ [['«☑ Несколько»: коснитесь всех трёх, затем «⊕ Объединить»','«☑ Bir nechta»: uchalasiga tegib, so‘ng «⊕ Birlashtirish»ni bosing'],()=>F.uni&&S.some(s=>s.type==='path'),'[data-a=uni]'],
+ [['Принт на груди: звезда или сердце','Ko‘krakda nusxa: yulduz yoki yurak'],()=>has('star')||has('heart')],
+ [['Подпись под принтом текстом','Nusxa ostiga matn bilan yozuv']  ,()=>has('text'),'.tb[data-t=text]']]}
+];
+let S=[],SEL=null,tool='pick',cur=0,F,drag=null,id=0,H=[],R=[],tg='fill',LG=0,DEF={fill:'#e4572e',stroke:'#1b2620',sw:2},done=new Set();
+const $=q=>document.querySelector(q),cv=$('#cv'),obj=i=>S.find(s=>s.id===i),has=t=>S.some(s=>s.type===t);
+try{done=new Set(JSON.parse(localStorage.getItem('cd_done')||'[]'));cur=Math.min(+localStorage.getItem('cd_cur')||0,L.length-1);LG=+localStorage.getItem('cd_lg')||0;if(localStorage.getItem('cd_lg')===null&&/^uz/i.test(navigator.language))LG=1}catch(e){}
+const snap=()=>{H.push(JSON.stringify(S));R=[]};
+function ui(){document.documentElement.lang=LG?'uz':'ru';$('#lgs').innerHTML=lgSeg();
+ document.querySelectorAll('[data-k]').forEach(e=>e.textContent=K[e.dataset.k][LG]);
+ $('#tools').innerHTML=TOOLS.map(t=>`<button class="tb ${t[0]===tool?'on':''}" data-t="${t[0]}"><i>${t[1]}</i>${t[2][LG]}</button>`).join('');
+ $('#tip').textContent=TOOLS.find(t=>t[0]===tool)[3][LG];$('#tip').style.opacity=.94;clearTimeout(TT);TT=setTimeout(()=>{$('#tip').style.opacity=0},4000);xp();tabsUi();draw();info()}
+function openLesson(n){cur=n;try{localStorage.setItem('cd_cur',n)}catch(e){}
+ S=[];SEL=null;MS=[];MM=false;{const mb=$('[data-a=ms]');if(mb)mb.classList.remove('on')}H=[];R=[];F={t:{}};tool='pick';$('#menu').classList.remove('open');ui()}
+$('#tools').onclick=e=>{const b=e.target.closest('.tb');if(b){bezEnd();tool=b.dataset.t;F.t[tool]=true;ui()}};
+var LEC_I=null;
+function setLang(n){LG=n;try{localStorage.setItem('cd_lg',LG)}catch(e){}ui();if($('#lec').classList.contains('on'))openLec(LEC_I);if($('#ref').classList.contains('on'))openRef()}
+const lgSeg=()=>`<span class="lgs"><button data-l="0" class="${LG?'':'on'}">RU</button><button data-l="1" class="${LG?'on':''}">UZ</button></span>`;
+$('#lgs').onclick=e=>{const b=e.target.closest('button');if(b)setLang(+b.dataset.l)};
+$('#lt').onclick=()=>$('#lesson').classList.toggle('off');
+$('#pal').innerHTML=PAL.map(c=>`<b style="background:${c}" data-c="${c}"></b>`).join('')+['g1','g2','g3','g4','g5','g6'].map(g=>`<b data-c="url(#${g})" style="background:${GR[g]}"></b>`).join('')+'<b data-c="none" style="background:linear-gradient(135deg,#fff 45%,#f00 45%,#f00 55%,#fff 55%)"></b>';
+document.querySelectorAll('.tg').forEach(b=>b.onclick=()=>{tg=b.dataset.g;document.querySelectorAll('.tg').forEach(x=>x.classList.toggle('on',x===b))});
+function setC(c){const s=obj(SEL);if(s){snap();s[tg]=c;if(tg==='stroke'&&s.sw===0)s.sw=2}else DEF[tg]=c;if(tg==='fill'&&c!=='none')DEF.fill=c;F[tg]=true;draw();info()}
+$('#pal').onclick=e=>{if(e.target.dataset.c)setC(e.target.dataset.c)};
+$('#cc').oninput=e=>setC(e.target.value);
+
+const pt=e=>{const p=cv.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(cv.getScreenCTM().inverse())};
+function star(s){let r=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,k=i%2?.4:1;r.push((s.x+s.w/2+Math.cos(a)*k*s.w/2)+','+(s.y+s.h/2+Math.sin(a)*k*s.h/2))}return r.join(' ')}
+function pathD(s){const P=(s.pts||[[0,0]]).map(p=>[s.x+p[0]*s.w,s.y+p[1]*s.h]);if(!s.sm||P.length<3)return'M'+P.map(p=>p.join(' ')).join('L');let d='M'+P[0].join(' ');for(let i=1;i<P.length-1;i++)d+='Q'+P[i].join(' ')+' '+((P[i][0]+P[i+1][0])/2)+' '+((P[i][1]+P[i+1][1])/2);return d+'L'+P[P.length-1].join(' ')}
+function shp(s){const sw=s.sw,a=`data-id="${s.id}" pointer-events="all" fill="${s.fill}" stroke="${sw?s.stroke:'none'}" stroke-width="${sw}" stroke-linejoin="round"`;
+ if(s.type==='rect')return`<rect ${a} x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}"/>`;
+ if(s.type==='ell')return`<ellipse ${a} cx="${s.x+s.w/2}" cy="${s.y+s.h/2}" rx="${s.w/2}" ry="${s.h/2}"/>`;
+ if(s.type==='poly')return`<polygon ${a} points="${[[.25,0],[.75,0],[1,.5],[.75,1],[.25,1],[0,.5]].map(p=>(s.x+p[0]*s.w)+','+(s.y+p[1]*s.h)).join(' ')}"/>`;
+ if(s.type==='star')return`<polygon ${a} points="${star(s)}"/>`;
+ if(s.type==='curve'){const d=curveD(s);return`<path ${a} d="${d}"/>`+(s.fill==='none'?`<path data-id="${s.id}" d="${d}" fill="none" stroke="transparent" stroke-width="20"/>`:'')}
+ if(s.type==='path')return`<path ${a} fill-rule="evenodd" vector-effect="non-scaling-stroke" transform="translate(${s.x} ${s.y}) scale(${s.w/s.ow} ${s.h/s.oh})" d="${s.d}"/>`;
+ if(s.type==='tri'||s.type==='arrow')return`<polygon ${a} points="${(s.type==='tri'?[[.5,0],[1,1],[0,1]]:[[0,.35],[.6,.35],[.6,.1],[1,.5],[.6,.9],[.6,.65],[0,.65]]).map(p=>(s.x+p[0]*s.w)+','+(s.y+p[1]*s.h)).join(' ')}"/>`;
+ if(s.type==='heart'){const x=s.x,y=s.y,w=s.w,h=s.h,c=x+w/2;return`<path ${a} d="M${c} ${y+h}C${x-w*.15} ${y+h*.55} ${x+w*.1} ${y-h*.1} ${c} ${y+h*.3}C${x+w*.9} ${y-h*.1} ${x+w*1.15} ${y+h*.55} ${c} ${y+h}Z"/>`}
+ if(s.type==='text')return`<text data-id="${s.id}" x="${s.x}" y="${s.y+s.h*.82}" font-size="${s.h}" font-weight="700" font-family="Onest,sans-serif" fill="${s.fill}" stroke="${sw?s.stroke:'none'}" stroke-width="${sw/4}">${s.text.replace(/[<&]/g,'')}</text>`;
+ const d=s.type==='line'?`M${s.x} ${s.fl?s.y+s.h:s.y}L${s.x+s.w} ${s.fl?s.y:s.y+s.h}`:s.type==='spi'?spiD(s):pathD(s);
+ return`<path d="${d}" fill="none" stroke="${s.stroke}" stroke-width="${Math.max(sw,1)}" stroke-linecap="round" stroke-linejoin="round"/><path data-id="${s.id}" d="${d}" fill="none" stroke="transparent" stroke-width="20"/>`}
+const rot=s=>{const c=s.x+s.w/2,d=s.y+s.h/2;return`rotate(${s.rot||0} ${c} ${d})`+(s.fx||s.fy?` translate(${c} ${d}) scale(${s.fx?-1:1} ${s.fy?-1:1}) translate(${-c} ${-d})`:'')};
+function draw(){MS=MS.filter(i=>obj(i));$('#fdel').disabled=SEL==null&&!MS.length;$('#L').innerHTML=S.map(s=>`<g transform="${rot(s)}" opacity="${s.op||1}">${shp(s)}</g>`).join('');
+ const s=obj(SEL),h=$('#H');h.innerHTML=XO?'<path d="M184 250H216M200 234V266" stroke="#e4572e" stroke-width="2" pointer-events="none"/><circle cx="200" cy="250" r="6" fill="none" stroke="#e4572e" stroke-width="2" pointer-events="none"/>':'';
+ if(s){let x=`<g transform="${rot(s)}"><rect x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" fill="none" stroke="#2a7fff" stroke-dasharray="4 3" pointer-events="none"/></g>`;
+  if(!s.rot&&tool!=='shape')[[0,0],[1,0],[0,1],[1,1]].forEach(c=>x+=`<rect data-h="${c[0]}${c[1]}" x="${s.x+c[0]*s.w-12}" y="${s.y+c[1]*s.h-12}" width="24" height="24" rx="3" fill="#fff" stroke="#2a7fff" stroke-width="2"/>`);h.innerHTML+=x}MS.forEach(i=>{const m=obj(i);if(m)h.innerHTML+=`<rect transform="${rot(m)}" x="${m.x}" y="${m.y}" width="${m.w}" height="${m.h}" fill="none" stroke="#e4572e" stroke-width="2.5" stroke-dasharray="5 3" pointer-events="none"/>`});
+ if(s&&s.type==='curve'&&tool==='shape'&&!s.rot)nodesUi(s,h);{const f=s?s.fill:DEF.fill;$('#sf').style.background=f==='none'?'none':GR[(f.match(/g\d/)||[])[0]]||f}$('#ss').style.borderColor=s?s.stroke:DEF.stroke;
+ const sw=$('#sw');if(s)sw.value=String(s.sw);
+ $('#st').textContent=s?`${(TOOLS.find(t=>t[0]===s.type)||[0,0,['Контур','Kontur']])[2][LG]} · ${Math.round(s.w)}×${Math.round(s.h)} · X ${Math.round(s.x)}  Y ${Math.round(s.y)}${s.rot?' · '+s.rot+'°':''}`:`${S.length} ${LG?'obyekt':'объект'}`}
+
+cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=pt(e);cv.setPointerCapture(e.pointerId);
+ const hd=e.target.dataset&&e.target.dataset.h,el=e.target.closest('[data-id]');
+ if(hd&&SEL!=null){const s=obj(SEL);snap();drag={m:'rs',h:hd,ax:hd[0]==='0'?s.x+s.w:s.x,ay:hd[1]==='0'?s.y+s.h:s.y,s};return}
+ if(tool==='pick'){const i=el?+el.dataset.id:null;
+ if(MM&&i!=null){MS=MS.includes(i)?MS.filter(q=>q!==i):[...MS,i];SEL=i;draw();info();return}
+ SEL=i;const o=obj(i);if(!MM&&!MS.includes(i))MS=o&&o.g?S.filter(q=>q.g===o.g).map(q=>q.id):[];
+ if(o){snap();const grp=MS.length>1&&MS.includes(i)?MS.map(q=>obj(q)).map(q=>({o:q,dx:p.x-q.x,dy:p.y-q.y})):null;drag={m:'mv',dx:p.x-o.x,dy:p.y-o.y,s:o,grp}}draw();info();return}
+ if(tool==='shape'){const nd=e.target.dataset&&e.target.dataset.n,hn=e.target.dataset&&e.target.dataset.hn,c=obj(SEL);
+  if(c&&c.type==='curve'&&(nd!=null||hn!=null)){snap();let i,w;if(nd!=null){i=+nd}else{const q=hn.split(':');i=+q[0];w=q[1]}NSI=i;drag={m:nd!=null?'nd':'hd',s:c,i,w};draw();return}
+  const o=el&&obj(+el.dataset.id);SEL=o?o.id:null;NSI=-1;if(o&&o.type!=='curve'){if(CONV.includes(o.type)){snap();toCurve(o);F.conv=true}else toast(K.nob[LG])}draw();info();return}
+ if(tool==='erase'){snap();drag={m:'erase',s:{},did:0};eraseAt(el);return}
+ if(tool==='hand'){drag={m:'pan',s:{},cx:e.clientX,cy:e.clientY,vx:VC.x,vy:VC.y};return}
+ if(tool==='bez'){const now=Date.now();let s=obj(BZ);if(!s){snap();s=mk('curve',p.x,p.y,1,1);s.A=[];s.nodes=[];S.push(s);BZ=s.id;SEL=s.id}if(now-BT<350){bezEnd();return}BT=now;s.A.push({p:[p.x,p.y],a:[p.x,p.y],b:[p.x,p.y],sm:false});drag={m:'bzh',s};bezFit(s);draw();info();return}
+ if(tool==='eye'){const s=el&&obj(+el.dataset.id);if(s&&s.fill!=='none'){DEF.fill=s.fill;const t=obj(SEL);if(t&&t!==s){snap();t.fill=s.fill}F.eye=true;draw();info()}return}
+ if(tool==='text'){const px=p.x,py=p.y;askText(t=>{snap();const h=40,s=mk('text',px,py,t.length*h*.6,h);s.text=t;s.x=Math.max(0,Math.min(s.x,400-s.w));S.push(s);SEL=s.id;draw();info()});return}
+ snap();const s=mk(tool,p.x,p.y,1,1);s.ox=p.x;s.oy=p.y;if(tool==='pen')s.raw=[[p.x,p.y]];S.push(s);SEL=s.id;drag={m:'new',s};draw()});
+cv.addEventListener('pointermove',e=>{if(!drag)return;if(drag.m==='nd'||drag.m==='hd'){nodeMove(drag,pt(e));rq();return}if(drag.m==='bzh'){bzMove(drag,pt(e));rq();return}if(drag.m==='erase'){const t=document.elementFromPoint&&document.elementFromPoint(e.clientX,e.clientY);eraseAt(t&&t.closest&&t.closest('[data-id]'));return}if(drag.m==='pan'){const r=cv.getBoundingClientRect(),k=(400/Z)/r.width;VC.x=drag.vx-(e.clientX-drag.cx)*k;VC.y=drag.vy-(e.clientY-drag.cy)*k;setView();return}const p=pt(e),s=drag.s;
+ if(drag.m==='mv'){if(drag.grp)drag.grp.forEach(g=>{g.o.x=p.x-g.dx;g.o.y=p.y-g.dy});else{s.x=p.x-drag.dx;s.y=p.y-drag.dy}drag.moved=true}
+ else if(drag.m==='new'){if(s.type==='pen'){s.raw.push([p.x,p.y]);const xs=s.raw.map(q=>q[0]),ys=s.raw.map(q=>q[1]);s.x=Math.min(...xs);s.y=Math.min(...ys);s.w=Math.max(1,Math.max(...xs)-s.x);s.h=Math.max(1,Math.max(...ys)-s.y);s.pts=s.raw.map(q=>[(q[0]-s.x)/s.w,(q[1]-s.y)/s.h])}
+  else{s.x=Math.min(p.x,s.ox);s.y=Math.min(p.y,s.oy);s.w=Math.abs(p.x-s.ox);s.h=Math.abs(p.y-s.oy);s.fl=s.type==='line'&&(p.x-s.ox)*(p.y-s.oy)<0}}
+ else{let w=Math.max(12,Math.abs(p.x-drag.ax)),h=Math.max(12,Math.abs(p.y-drag.ay)),x=Math.min(p.x,drag.ax),y=Math.min(p.y,drag.ay);
+  if(s.type==='text'){w=s.text.length*h*.6;x=drag.h[0]==='0'?drag.ax-w:drag.ax}
+  s.x=x;s.y=y;s.w=w;s.h=h;drag.rs=true}
+ rq()});
+function rq(){if(!rq.p){rq.p=1;requestAnimationFrame(()=>{rq.p=0;draw()})}}
+function end(){if(!drag)return;const s=drag.s;
+ if(drag.m==='new'&&s.w<6&&s.h<6){S=S.filter(q=>q!==s);SEL=null;H.pop()}
+ else if(drag.m==='mv'){if(drag.moved)F.moved=true;else H.pop()}
+ else if(drag.m==='rs'){if(drag.rs)F.resized=true;else H.pop()}else if(drag.m==='erase'&&!drag.did)H.pop()
+ if(s.raw)delete s.raw;if(MIR&&drag.m==='new'&&S.includes(s)){const m={...s,id:++id,x:400-s.x-s.w,rot:-(s.rot||0),fl:!s.fl};if(s.pts)m.pts=s.pts.map(p=>[1-p[0],p[1]]);if(s.nodes)m.nodes=s.nodes.map(n=>({p:[1-n.p[0],n.p[1]],a:[1-n.a[0],n.a[1]],b:[1-n.b[0],n.b[1]],sm:n.sm}));S.push(m);F.mir=true}drag=null;draw();info()}
+cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+const SO=['pen','line','spi','curve'],mk=(t,x,y,w,h)=>({id:++id,type:t,x,y,w,h,fill:SO.includes(t)?'none':DEF.fill,stroke:DEF.stroke,sw:SO.includes(t)?Math.max(DEF.sw,2):DEF.sw});
+$('#op').onchange=()=>{const s=obj(SEL);if(s){snap();s.op=+$('#op').value;F.op=true;draw();info()}};
+$('#sw').onchange=()=>{const s=obj(SEL),v=+$('#sw').value;if(s){snap();s.sw=v}else DEF.sw=v;if(v>=8)F.sw=true;draw();info()};
+$('#props').addEventListener('click',e=>{const a=e.target.dataset.a;if(!a)return;const s=obj(SEL);
+ if(a==='abs')abstract();
+ else if(a==='orn')orn();
+ else if(a==='mir'){MIR=!MIR;e.target.classList.toggle('on',MIR)}
+ else if(a==='ms'){MM=!MM;e.target.classList.toggle('on',MM);if(!MM&&MS.length<2)MS=[];draw();info();return}
+ else if(a==='uni'||a==='sub'||a==='int')bool(a)
+ else if(a==='grp'||a==='ugr')group(a==='grp')
+ else if(a[0]==='a'&&a[1]==='l')align(a)
+ else if(a==='png'||a==='svg')exp(a)
+ else if(a==='clr'){if(Date.now()-CLR>3000){CLR=Date.now();toast(K.clr2[LG]);return}CLR=0;snap();S=[];SEL=null;MS=[];F.deleted=true}
+ else if(['nadd','ndel','nsm','ncl'].includes(a))nodeOp(a)
+ else if(a==='undo'){if(!H.length)return;R.push(JSON.stringify(S));S=JSON.parse(H.pop());F.undo=true;if(!obj(SEL))SEL=null}
+ else if(a==='redo'){if(!R.length)return;H.push(JSON.stringify(S));S=JSON.parse(R.pop())}
+ else if(s){snap();
+  if(a==='del'){S=S.filter(q=>q!==s&&!MS.includes(q.id));MS=[];SEL=null;F.deleted=true}
+  if(a==='dup'){const c={...s,id:++id,x:Math.min(s.x+18,400-s.w),y:Math.min(s.y+18,500-s.h)};if(s.nodes)c.nodes=JSON.parse(JSON.stringify(s.nodes));S.push(c);SEL=c.id;F.dup=true}
+  if(a==='front'){S=S.filter(q=>q!==s);S.push(s);F.front=true}
+  if(a==='back'){S=S.filter(q=>q!==s);S.unshift(s)}
+  if(a==='rot'){s.rot=((s.rot||0)+15)%360;F.rot=true}
+  if(a==='ctr'){s.x=(400-s.w)/2;s.y=(500-s.h)/2;F.ctr=true}
+  if(a==='fx'){s.fx=!s.fx;F.flip=true}if(a==='fy'){s.fy=!s.fy;F.flip=true}}
+ draw();info()});
+
+function abstract(){snap();const c=PAL.slice(4),r=n=>Math.random()*n,bg=['#14213d','#1b2620','#2b1b3d','#3d1b2b'];
+ S=[];const b=mk('rect',0,0,400,500);b.fill=bg[r(4)|0];b.sw=0;S.push(b);
+ for(let i=0;i<10;i++){const t=['ell','star','poly','rect','ell','line'][i%6],w=70+r(170),h=t==='ell'&&i%2?w:Math.max(30,40+r(180)),s=mk(t,r(400-w),r(500-h),w,h);
+ s.fill=t==='line'?'none':c[r(c.length)|0];s.stroke=c[r(c.length)|0];s.sw=t==='line'?4+(r(6)|0):(Math.random()<.4?2:0);s.op=.5+r(.4);s.rot=t==='rect'||t==='star'?(r(8)|0)*15:0;s.fl=Math.random()<.5;S.push(s)}
+ SEL=null;F.abs=true}
+function confetti(){for(let i=0;i<40;i++){const d=document.createElement('i');d.className='cf';d.style.left=r100()+'vw';d.style.background=PAL[4+(Math.random()*16|0)];d.style.animationDelay=Math.random()*.5+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}}
+const r100=()=>Math.random()*100;
+const TODAY=new Date().toISOString().slice(0,10),cnt=t=>S.filter(s=>s.type===t).length;
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let ACH=new Set(ld('cd_ach',[])),CHD=new Set(ld('cd_ch',[])),MIR=false,STK=ld('cd_stk',{d:'',n:0});
+if(STK.d!==TODAY){const y=new Date(Date.now()-864e5).toISOString().slice(0,10);STK={d:TODAY,n:STK.d===y?STK.n+1:1};save('cd_stk',STK)}
+const RK=[['Новичок','Boshlang‘ich'],['Ученик','O‘quvchi'],['Дизайнер','Dizayner'],['Мастер Corel','Corel ustasi']],xpv=()=>done.size*100+ACH.size*50+CHD.size*75;
+function xp(){$('#xp').textContent=`🔥${STK.n} ⭐${xpv()}`}
+const BD=[['first','🎨',['Первый штрих','Birinchi chiziq'],()=>S.length>=1],['star','⭐',['Звёздный час','Yulduzli soat'],()=>has('star')],['ten','🧩',['10 объектов','10 ta obyekt'],()=>S.length>=10],['col','🌈',['5 цветов','5 xil rang'],()=>new Set(S.map(s=>s.fill)).size>=5],['mir','🪞',['Симметрия','Simmetriya'],()=>F.mir],['orn','🌸',['Мастер орнамента','Naqsh ustasi'],()=>F.orn],['abs','✨',['Абстракционист','Abstraksionist'],()=>F.abs],['txt','🔤',['Автор надписи','Yozuv muallifi'],()=>has('text')],['grad','🎭',['Градиент','Gradiyent'],()=>S.some(s=>/g\d/.test(s.fill))]];
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+function chk(){BD.forEach(b=>{if(!ACH.has(b[0])&&b[3]()){ACH.add(b[0]);save('cd_ach',[...ACH]);toast(b[1]+' '+b[2][LG]);xp()}})}
+const CHS=[
+{t:['Ракета','Raketa'],w:['Собери ракету: корпус, крылья, огонь.','Raketa yig‘ing: korpus, qanot, olov.'],s:[[['Корпус — эллипс','Korpus — ellips'],()=>has('ell')],[['Крылья — многоугольник','Qanot — ko‘pburchak'],()=>has('poly')],[['Огонь — звезда','Olov — yulduz'],()=>has('star')],[['Минимум 5 объектов','Kamida 5 ta obyekt'],()=>S.length>=5]]},
+{t:['Логотип кофейни','Qahvaxona logotipi'],w:['Фон, чашка-эллипс и название.','Fon, finjon-ellips va nom.'],s:[[['Фон-прямоугольник','Fon — to‘rtburchak'],()=>has('rect')],[['Эллипс-чашка','Finjon — ellips'],()=>has('ell')],[['Название текстом','Nomi — matn'],()=>has('text')],[['3 разных цвета','3 xil rang'],()=>new Set(S.map(s=>s.fill)).size>=3]]},
+{t:['Цветок','Gul'],w:['Лепестки-эллипсы вокруг звезды-сердцевины.','Gulbarglar — ellipslar, o‘rtasida yulduz.'],s:[[['4 эллипса','4 ta ellips'],()=>cnt('ell')>=4],[['Звезда в центре','Markazda yulduz'],()=>has('star')],[['3 цвета','3 xil rang'],()=>new Set(S.map(s=>s.fill)).size>=3]]},
+{t:['Симметричный узор','Simmetrik naqsh'],w:['Включи «Симметрия» или нажми «Орнамент».','«Simmetriya»ni yoqing yoki «Naqsh»ni bosing.'],s:[[['Симметрия или орнамент','Simmetriya yoki naqsh'],()=>F.mir||F.orn],[['8+ объектов','8+ obyekt'],()=>S.length>=8],[['Градиентная заливка','Gradiyent to‘ldirish'],()=>S.some(s=>/g\d/.test(s.fill))]]},
+{t:['Моя абстракция','Mening abstraksiyam'],w:['Абстракция, прозрачность и подпись.','Abstraksiya, shaffoflik va imzo.'],s:[[['Нажмите «Абстракция»','«Abstraksiya»ni bosing'],()=>F.abs],[['Прозрачность 40%','Shaffoflik 40%'],()=>F.op],[['Подпись текстом','Matn bilan imzo'],()=>has('text')]]}];
+const CH=CHS[Math.floor(Date.now()/864e5)%CHS.length];
+function orn(){snap();const P=['#00aeef','#17bebb','#ffffff','#ffd23f','#2a7fff','#3a3ad6'],bg=['#14213d','#0b3d3a','#ffffff'],r=a=>a[Math.random()*a.length|0],cx=200,cy=250,n=12;S=[];
+ const b=mk('rect',0,0,400,500);b.fill=r(bg);b.sw=0;S.push(b);
+ const g=mk('ell',cx-150,cy-150,300,300);g.fill='none';g.stroke=r(P.slice(3));g.sw=4;S.push(g);
+ for(let i=0;i<n;i++){const a=i*2*Math.PI/n,s=mk('ell',cx+Math.cos(a)*95-20,cy+Math.sin(a)*95-55,40,110);s.rot=Math.round(a*180/Math.PI+90);s.fill=P[i%2];s.stroke=P[3];s.sw=2;s.op=.85;S.push(s)}
+ const st=mk('star',cx-55,cy-55,110,110);st.fill=P[3];st.stroke=P[5];st.sw=3;S.push(st);
+ const c=mk('ell',cx-22,cy-22,44,44);c.fill=P[5];c.sw=0;S.push(c);SEL=null;F.orn=true}
+let SM=false,XO=false,VC={x:200,y:250},Z=1,BZ=null,BT=0,MS=[],MM=false,CLR=0,NSI=-1,TAB='o',TT=0,LF=!!(window.matchMedia&&matchMedia('(min-width:860px),(min-width:640px) and (orientation:landscape)').matches);
+function pp(s){const P=paper,m=mid(s),c=new P.Point(m.x,m.y),poly=a=>new P.Path({segments:a.map(q=>[s.x+q[0]*s.w,s.y+q[1]*s.h]),closed:true}),t=s.type;let p;
+ if(t==='rect')p=new P.Path.Rectangle(new P.Rectangle(s.x,s.y,s.w,s.h));
+ else if(t==='ell')p=new P.Path.Ellipse({center:c,radius:[s.w/2,s.h/2]});
+ else if(t==='poly')p=poly([[.25,0],[.75,0],[1,.5],[.75,1],[.25,1],[0,.5]]);
+ else if(t==='tri')p=poly([[.5,0],[1,1],[0,1]]);
+ else if(t==='arrow')p=poly([[0,.35],[.6,.35],[.6,.1],[1,.5],[.6,.9],[.6,.65],[0,.65]]);
+ else if(t==='star')p=new P.Path({segments:star(s).split(' ').map(q=>q.split(',').map(Number)),closed:true});
+ else if(t==='heart'){const x=s.x,y=s.y,w=s.w,h=s.h,cx=x+w/2;p=new P.Path(`M${cx} ${y+h}C${x-w*.15} ${y+h*.55} ${x+w*.1} ${y-h*.1} ${cx} ${y+h*.3}C${x+w*.9} ${y-h*.1} ${x+w*1.15} ${y+h*.55} ${cx} ${y+h}Z`)}
+ else if(t==='curve'){p=new P.Path({segments:absN(s).map(n=>new P.Segment(new P.Point(n.p[0],n.p[1]),new P.Point(n.a[0]-n.p[0],n.a[1]-n.p[1]),new P.Point(n.b[0]-n.p[0],n.b[1]-n.p[1]))),closed:!!s.closed})}
+ else if(t==='path'){p=new P.CompoundPath(s.d);p.scale(s.w/s.ow,s.h/s.oh,new P.Point(0,0));p.translate(new P.Point(s.x,s.y))}
+ else return null;
+ if(s.rot)p.rotate(s.rot,c);return p}
+function bool(a){const o=MS.map(obj).filter(Boolean);if(o.length<2){toast(K.two[LG]);return}if(!window.paper){toast('paper.js ✗');return}
+ if(!bool.i){paper.setup(document.createElement('canvas'));bool.i=1}
+ const ps=o.map(pp);if(ps.some(x=>!x)){toast(K.nob[LG]);return}
+ let r=ps[0];for(let i=1;i<ps.length;i++)r=a==='uni'?r.unite(ps[i]):a==='sub'?r.subtract(ps[i]):r.intersect(ps[i]);
+ const b=r.bounds;if(!(b.width>0&&b.height>0)){toast('∅');return}
+ snap();r.translate(new paper.Point(-b.x,-b.y));
+ const n={id:++id,type:'path',x:b.x,y:b.y,w:b.width,h:b.height,ow:b.width,oh:b.height,d:r.pathData,fill:o[0].fill,stroke:o[0].stroke,sw:o[0].sw,op:o[0].op};
+ S=S.filter(q=>!o.includes(q));S.push(n);SEL=n.id;MS=[];F[a]=true;draw();info()}
+function group(on){const o=(MS.length?MS.map(obj):[obj(SEL)]).filter(Boolean);if(!o.length||(on&&o.length<2)){toast(K.two[LG]);return}snap();if(on){const g='g'+(++id);o.forEach(s=>s.g=g);F.grp=true}else{o.forEach(s=>delete s.g);MS=[]}draw();info()}
+function align(a){const m=MS.length>1,o=(m?MS.map(obj):[obj(SEL)]).filter(Boolean);if(!o.length)return;snap();const b=m?{l:Math.min(...o.map(s=>s.x)),r:Math.max(...o.map(s=>s.x+s.w)),t:Math.min(...o.map(s=>s.y)),b:Math.max(...o.map(s=>s.y+s.h))}:{l:0,r:400,t:0,b:500};
+ o.forEach(s=>{if(a==='alL')s.x=b.l;if(a==='alR')s.x=b.r-s.w;if(a==='alT')s.y=b.t;if(a==='alB')s.y=b.b-s.h;if(a==='alX')s.x=(b.l+b.r)/2-s.w/2;if(a==='alY')s.y=(b.t+b.b)/2-s.h/2});F.align=true;draw();info()}
+async function exp(t){const dl=window.claude&&await claude.use('downloads').catch(()=>null);if(!dl){toast(K.nodl[LG]);return}
+ const g=S.map(s=>`<g transform="${rot(s)}" opacity="${s.op||1}">${shp(s)}</g>`).join(''),svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="800" height="1000">${cv.querySelector('defs').outerHTML}<rect width="400" height="500" fill="#fff"/>${g}</svg>`;
+ try{if(t==='svg')await dl.save({filename:'coreldraw-work.svg',data:svg});else{const im=new Image();im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);await im.decode();const c=document.createElement('canvas');c.width=800;c.height=1000;c.getContext('2d').drawImage(im,0,0);const b=await new Promise(r=>c.toBlob(r,'image/png'));await dl.save({filename:'coreldraw-work.png',data:b})}F.exp=true;info()}catch(e){}}
+function setView(){const w=400/Z,h=500/Z;VC.x=Math.max(w/2,Math.min(400-w/2,VC.x));VC.y=Math.max(h/2,Math.min(500-h/2,VC.y));cv.setAttribute('viewBox',`${VC.x-w/2} ${VC.y-h/2} ${w} ${h}`)}
+function bezFit(s){renorm(s,s.A)}
+function bezEnd(){const s=obj(BZ);if(s){if(s.A.length<2)S=S.filter(q=>q!==s);else delete s.A}BZ=null;draw();info()}
+function spiD(s){const cx=s.x+s.w/2,cy=s.y+s.h/2;let d='';for(let a=0,i=0;a<=6*Math.PI;a+=.25,i++){const u=a/(6*Math.PI);d+=(i?'L':'M')+(cx+s.w/2*u*Math.cos(a))+' '+(cy+s.h/2*u*Math.sin(a))}return d}
+$('#props').addEventListener('click',e=>{const z=e.target.dataset.z;if(z===undefined)return;Z=+z?Math.max(1,Math.min(5,Z*z)):1;if(Z===1)VC={x:200,y:250};F.zoom=true;setView()});
+const USE={pick:['Выделять, двигать, менять размер','Tanlash, ko‘chirish, o‘lcham'],rect:['Фоны, кнопки, рамки, окна','Fon, tugma, ramka, oyna'],ell:['Круги, овалы, лепестки','Doira, oval, gulbarg'],poly:['Соты, значки, гайки','Uyalar, belgilar'],star:['Награды, акценты, солнце','Mukofot, urg‘u, quyosh'],tri:['Крыши, горы, пирамиды','Tom, tog‘, piramida'],arrow:['Указатели и схемы','Ko‘rsatkich va sxema'],heart:['Открытки, значки «лайк»','Otkritka, «like» belgisi'],spi:['Узоры и завитки','Naqsh va o‘ramlar'],line:['Разделители, лучи, схемы','Ajratgich, nur, sxema'],pen:['Эскиз, подпись, свободный рисунок','Eskiz, imzo, erkin chizma'],bez:['Плавные контуры, логотипы, буквы','Silliq kontur, logotip, harf'],text:['Названия, подписи, заголовки','Nom, imzo, sarlavha'],eye:['Взять точный цвет с объекта','Obyektdan aniq rang olish'],hand:['Двигать страницу при увеличении','Kattalashtirilganda siljitish'],erase:['Убрать ошибки и лишнее','Xato va ortiqchani o‘chirish'],shape:['Менять форму узлами и изгибами','Shaklni tugun va egrilik bilan o‘zgartirish']};
+const ACT=[['🎨 Заливка / Контур','Цвет внутри фигуры и её граница','🎨 To‘ldirish / Kontur','Shakl ichi va chegarasi rangi'],['🌈 Градиент','Плавный переход цвета: объём и блеск','🌈 Gradiyent','Rangning silliq o‘tishi: hajm va yaltiroqlik'],['👻 Прозрачность','Фигуры просвечивают и смешиваются','👻 Shaffoflik','Shakllar ko‘rinib aralashadi'],['🔄 Трансформация','Копии с поворотом и масштабом: узоры за секунды','🔄 Transformatsiya','Burilgan nusxalar: soniyada naqsh'],['🪞 Симметрия','Рисуете одну сторону — вторая появляется сама','🪞 Simmetriya','Bir tomonni chizasiz — ikkinchisi o‘zi chiqadi'],['↔ ↕ Отразить','Зеркальный разворот объекта','↔ ↕ Aks ettirish','Obyektni ko‘zgudek aylantirish'],['🔍 Масштаб','Приблизить для точной работы','🔍 Masshtab','Aniq ishlash uchun yaqinlashtirish'],['↶ Отмена','Вернуть последнее действие','↶ Bekor','Oxirgi amalni qaytarish'],['⊕⊖⊗ Объединить / Вычесть / Пересечь','Из нескольких фигур делают одну новую: логотипы, полумесяцы, вырезы','⊕⊖⊗ Birlashtirish / Ayirish / Kesishma','Bir nechta shakldan bitta yangisi: logotip, yarim oy, kesim'],['☑ Группа и выравнивание','Выделить несколько, связать в группу и выстроить ровно','☑ Guruh va tekislash','Bir nechtasini tanlab, guruhlab, tekis joylashtirish'],['⬇ PNG / SVG','Сохранить готовую работу в файл','⬇ PNG / SVG','Tayyor ishni faylga saqlash']];
+const msv=(a,vb)=>`<svg viewBox="${vb||'0 0 400 300'}" style="display:block;width:100%;background:#fff;border-radius:10px">${a.map(s=>`<g transform="${rot(s)}" opacity="${s.op||1}">${shp(s)}</g>`).join('')}</svg>`;
+const EX=[
+[['Логотип','Logotip'],['Знак компании: кафе, магазина, бренда','Kompaniya belgisi: kafe, do‘kon, brend'],()=>[mkS('rect',200,150,400,300,{fill:'#f4ecd8'}),mkS('ell',200,115,120,120,{fill:'#6f4e37'}),mkS('ell',200,115,70,70,{fill:'#f4ecd8'}),mkS('text',200,240,130,36,{text:'COFFEE',fill:'#6f4e37'})]],
+[['Визитка','Vizitka'],['Контакты в одной карточке','Aloqa ma‘lumotlari bitta kartada'],()=>[mkS('rect',200,150,400,300,{fill:'#dfe4e1'}),mkS('rect',200,150,300,170,{fill:'#ffffff',stroke:'#c0c0c0',sw:1}),mkS('rect',70,150,20,170,{fill:'#0e8a4a'}),mkS('text',215,110,158,24,{text:'Ali Valiyev',fill:'#17201b'}),mkS('rect',215,150,150,6,{fill:'#9aab9f'}),mkS('rect',215,172,110,6,{fill:'#9aab9f'}),mkS('rect',215,194,130,6,{fill:'#9aab9f'})]],
+[['Вывеска','Peshtaxta'],['Реклама над магазином или офисом','Do‘kon yoki ofis ustidagi reklama'],()=>[mkS('rect',200,150,400,300,{fill:'#cfe8f7'}),mkS('rect',200,150,330,110,{fill:'#14213d',stroke:'#ffd23f',sw:6}),mkS('text',200,150,168,40,{text:'MAGAZIN',fill:'#ffd23f'}),mkS('rect',90,250,14,90,{fill:'#555555'}),mkS('rect',310,250,14,90,{fill:'#555555'})]],
+[['Наклейка','Stiker'],['Печать и резка на плоттере','Plotterda bosma va kesish'],()=>[mkS('rect',200,150,400,300,{fill:'#f1f1f1'}),mkS('star',200,150,240,240,{fill:'#ffd23f',stroke:'#e4572e',sw:5}),mkS('text',200,150,115,48,{text:'SALE',fill:'#e4572e'})]],
+[['Принт на футболке','Futbolkadagi nusxa'],['Рисунок для одежды и мерча','Kiyim va merch uchun rasm'],()=>[mkS('rect',200,150,400,300,{fill:'#eef0ee'}),mkS('path',200,150,240,200,{d:'M30 0L0 40L30 70L50 55L50 160L150 160L150 55L170 70L200 40L170 0L135 0Q100 30 65 0Z',ow:200,oh:160,fill:'#2a7fff',sw:2}),mkS('star',200,175,60,60,{fill:'#ffd23f'})]],
+[['Упаковка','Qadoq'],['Коробки, пакеты, этикетки','Qutilar, paketlar, yorliqlar'],()=>[mkS('rect',200,150,400,300,{fill:'#eef0ee'}),mkS('rect',200,160,150,190,{fill:'#17bebb',stroke:'#0b3d3a',sw:3}),mkS('ell',200,160,100,100,{fill:'#ffffff'}),mkS('text',200,160,54,30,{text:'TEA',fill:'#0b3d3a'})]],
+[['Контур для резки','Kesish konturi'],['Лазер и плоттер режут по векторной линии','Lazer va plotter vektor chiziq bo‘ylab kesadi'],()=>[mkS('rect',200,150,400,300,{fill:'#ffffff'}),mkS('star',200,150,200,200,{fill:'none',stroke:'#e4572e',sw:3}),mkS('star',200,150,90,90,{fill:'none',stroke:'#e4572e',sw:3})]],
+[['Иллюстрация','Illyustratsiya'],['Иконки и картинки из простых фигур','Oddiy shakllardan ikonka va rasmlar'],()=>[mkS('rect',200,150,400,300,{fill:'#cfe8f7'}),mkS('ell',300,70,70,70,{fill:'#ffd23f'}),mkS('tri',130,200,200,160,{fill:'#6c757d'}),mkS('tri',270,225,200,110,{fill:'#2a9d4f'})]]];
+const LEC=[
+{t:['Что такое CorelDRAW и зачем он нужен','CorelDRAW nima va nima uchun kerak'],b:[['CorelDRAW — программа для создания графики: логотипов, вывесок, визиток, наклеек, принтов на одежде, упаковки и плакатов. Вы рисуете не «пикселями», а фигурами и линиями, поэтому результат можно увеличить хоть до размера рекламного щита без потери качества.','CorelDRAW — grafika yaratish dasturi: logotip, peshtaxta, vizitka, stiker, kiyimdagi nusxa, qadoq va plakatlar. Siz «piksel» bilan emas, shakl va chiziqlar bilan chizasiz, shuning uchun natijani reklama shitigacha sifatini yo‘qotmay kattalashtirish mumkin.'],['Представьте конструктор: из кругов, квадратов, линий и текста вы собираете любую картинку. Каждую деталь можно двигать, перекрашивать и менять, не переделывая всё заново.','Konstruktorni tasavvur qiling: doira, kvadrat, chiziq va matndan istalgan rasmni yig‘asiz. Har bir detalni suring, qayta bo‘yang va o‘zgartiring — hammasini qaytadan qilish shart emas.'],['Эта программа есть почти в каждой типографии, рекламном агентстве и мастерской печати и резки. Поэтому умение работать в ней — настоящая профессия.','Bu dastur deyarli har bir bosmaxona, reklama agentligi va bosma-kesish ustaxonasida bor. Shuning uchun unda ishlay olish — haqiqiy kasb.']]},
+{t:['Вектор и растр: главное отличие','Vektor va raster: asosiy farq'],v:()=>{const a=[];for(let x=0;x<10;x++)for(let y=0;y<10;y++)if(Math.hypot(x-4.5,y-4.5)<4.8)a.push(mkS('rect',37+x*14,80+y*14,14,14,{fill:'#2a7fff'}));a.push(mkS('ell',300,150,140,140,{fill:'#2a7fff'}),mkS('text',107,270,66,22,{text:'PIXEL',fill:'#17201b'}),mkS('text',300,270,79,22,{text:'VECTOR',fill:'#17201b'}));return msv(a)},b:[['Растровая картинка (фото) состоит из крошечных квадратиков — пикселей. Если увеличить, видны «ступеньки» и картинка размывается (слева).','Raster rasm (foto) mayda kvadratchalar — pikseldan iborat. Kattalashtirsangiz, pog‘onalar ko‘rinib, rasm xiralashadi (chapda).'],['Векторная картинка (CorelDRAW) хранит не квадратики, а формулы: «круг здесь, такого размера и цвета». Поэтому линии всегда чёткие — хоть визитка, хоть баннер на 10 метров (справа).','Vektor rasm (CorelDRAW) kvadratchalarni emas, formulalarni saqlaydi: «doira shu yerda, shu o‘lcham va rangda». Shuning uchun chiziqlar doim aniq — vizitka ham, 10 metrli banner ham (o‘ngda).'],['Правило: логотипы, вывески, наклейки — всё, что печатают или режут, — рисуем в векторе. Фотографии ретушируют в растровых программах.','Qoida: logotip, peshtaxta, stiker — bosiladigan yoki kesiladigan hamma narsa vektorda chiziladi. Fotosuratlar raster dasturlarda tahrirlanadi.']]},
+{t:['Где используют: 8 примеров','Qayerda ishlatiladi: 8 ta misol'],g:1,b:[['Посмотрите, что можно сделать из простых фигур. Каждый пример вы научитесь повторять на уроках.','Oddiy shakllardan nima yasash mumkinligini ko‘ring. Har bir misolni darslarda takrorlashni o‘rganasiz.']]},
+{t:['Как устроен рисунок','Rasm qanday tuzilgan'],v:()=>msv([mkS('rect',160,150,150,110,{fill:'#2a7fff',stroke:'#1b2620',sw:3}),mkS('ell',230,170,120,120,{fill:'#e4572e',op:.85}),mkS('star',290,130,90,90,{fill:'#ffd23f'})]),b:[['Рисунок — это набор объектов. Объект — одна фигура: круг, прямоугольник, текст, линия.','Rasm — obyektlar to‘plami. Obyekt — bitta shakl: doira, to‘rtburchak, matn, chiziq.'],['У объекта есть заливка (цвет внутри), контур (граница), положение, размер и поворот.','Obyektning to‘ldirishi (ichki rang), konturi (chegara), joyi, o‘lchami va burilishi bor.'],['Объекты лежат слоями: тот, что выше, закрывает нижний (см. пример: квадрат → круг → звезда). Порядок можно менять.','Obyektlar qatlam bo‘lib yotadi: yuqoridagisi pastdagisini yopadi (misolda: kvadrat → doira → yulduz). Tartibni o‘zgartirish mumkin.'],['Фигуры копируют, поворачивают, объединяют и вычитают — так из простого получается сложное: полумесяц — это круг минус круг.','Shakllarni nusxalash, burish, birlashtirish va ayirish mumkin — oddiydan murakkab chiqadi: yarim oy — bu doira minus doira.']]},
+{t:['Что это даёт: работа и заработок','Bu nima beradi: ish va daromad'],b:[['С этими навыками можно делать: логотипы для магазинов и кафе, визитки, вывески и баннеры, наклейки и принты на футболки, макеты для резки на плоттере и лазере.','Bu ko‘nikmalar bilan do‘kon va kafe uchun logotip, vizitka, peshtaxta va banner, stiker va futbolka nusxalari, plotter va lazerda kesish maketlarini qilish mumkin.'],['Где искать работу: типографии, рекламные агентства, мастерские вывесок и сувениров, фриланс-биржи, свои заказы через соцсети.','Ish qayerdan izlash: bosmaxonalar, reklama agentliklari, peshtaxta va esdalik ustaxonalari, frilans birjalari, ijtimoiy tarmoqlar orqali o‘z buyurtmalari.'],['Как начать: пройдите уроки, соберите 5–10 работ в портфолио (логотип, визитка, наклейка, принт) и покажите первым заказчикам.','Qanday boshlash: darslarni o‘ting, portfolioga 5–10 ish (logotip, vizitka, stiker, nusxa) to‘plang va birinchi buyurtmachilarga ko‘rsating.']]},
+{t:['Как учиться на этом тренажёре','Bu trenajyorda qanday o‘qish'],b:[['Идите по порядку: «Знакомство с инструментами» → основы → узоры → профессиональные приёмы → проекты.','Tartib bilan boring: «Asboblar bilan tanishuv» → asoslar → naqshlar → professional usullar → loyihalar.'],['В каждом уроке нажмите «📺 Для класса», чтобы увидеть пример по шагам, а «📚 Справочник» объяснит каждый инструмент.','Har bir darsda «📺 Sinf uchun»ni bosib, misolni bosqichma-bosqich ko‘ring, «📚 Ma‘lumotnoma» esa har bir asbobni tushuntiradi.'],['Не бойтесь ошибаться: кнопка «Отмена» вернёт любое действие. Ежедневный челлендж и значки помогут не бросить.','Xato qilishdan qo‘rqmang: «Bekor» tugmasi har qanday amalni qaytaradi. Kunlik topshiriq va nishonlar tashlab ketmaslikka yordam beradi.']]}
+];
+function openLec(i){LEC_I=i;let h='<div class="lh">'+lgSeg()+'<button id="lx" class="ab">✕</button></div>';
+ if(i==null)h+=`<h3>📘 ${K.lc[LG]}</h3>`+LEC.map((l,n)=>`<button class="lc" data-n="${n}"><b>${n+1}.</b> ${l.t[LG]}</button>`).join('');
+ else{const l=LEC[i];h+=`<h3>${i+1}. ${l.t[LG]}</h3>`+(l.v?l.v():'')+l.b.map(p=>`<p>${p[LG]}</p>`).join('')+(l.g?`<div class="gx">${EX.map(e=>`<figure>${msv(e[2]())}<figcaption><b>${e[0][LG]}</b><br>${e[1][LG]}</figcaption></figure>`).join('')}</div>`:'')+`<p><button class="ab" data-n="-1">${K.bk[LG]}</button> ${i<LEC.length-1?`<button class="go" data-n="${i+1}">${K.nl[LG]} →</button>`:''}</p>`}
+ $('#lec .rb').innerHTML=h;$('#lec').classList.add('on');$('#lec .rb').scrollTop=0}
+$('#lcb').onclick=()=>openLec();$('#lec').onclick=e=>{const b=e.target.closest('button');if(b&&b.dataset.l!==undefined){setLang(+b.dataset.l);return}if(e.target.id==='lec'||e.target.id==='lx')$('#lec').classList.remove('on');else if(b&&b.dataset.n!==undefined)openLec(+b.dataset.n<0?null:+b.dataset.n)};
+function askText(cb){const a=$('#ask'),i=$('#ai');$('#aq').textContent=K.txt[LG];i.value=K.def[LG];a.classList.add('on');i.focus();i.select();const ok=()=>{const v=i.value.trim();a.classList.remove('on');if(v)cb(v)};$('#ao').onclick=ok;i.onkeydown=e=>{if(e.key==='Enter')ok();if(e.key==='Escape')a.classList.remove('on')};a.onclick=e=>{if(e.target===a)a.classList.remove('on')}}
+const CONV=['rect','ell','poly','tri','arrow','star'];
+function curveD(s){const N=s.nodes,P=q=>(s.x+q[0]*s.w)+' '+(s.y+q[1]*s.h);let d='M'+P(N[0].p);for(let i=1;i<N.length;i++)d+='C'+P(N[i-1].b)+' '+P(N[i].a)+' '+P(N[i].p);if(s.closed&&N.length>1)d+='C'+P(N[N.length-1].b)+' '+P(N[0].a)+' '+P(N[0].p)+'Z';return d}
+function absN(s){const q=u=>[s.x+u[0]*s.w,s.y+u[1]*s.h];return s.nodes.map(n=>({p:q(n.p),a:q(n.a),b:q(n.b),sm:n.sm}))}
+function renorm(s,A){const xs=A.map(n=>n.p[0]),ys=A.map(n=>n.p[1]);s.x=Math.min(...xs);s.y=Math.min(...ys);s.w=Math.max(1,Math.max(...xs)-s.x);s.h=Math.max(1,Math.max(...ys)-s.y);const q=u=>[(u[0]-s.x)/s.w,(u[1]-s.y)/s.h];s.nodes=A.map(n=>({p:q(n.p),a:q(n.a),b:q(n.b),sm:n.sm}))}
+function toCurve(s){const x=s.x,y=s.y,w=s.w,h=s.h,t=s.type,cr=q=>({p:q,a:[...q],b:[...q],sm:false});let A;
+ if(t==='rect')A=[[x,y],[x+w,y],[x+w,y+h],[x,y+h]].map(cr);
+ else if(t==='ell'){const k=.5523,rx=w/2,ry=h/2,cx=x+rx,cy=y+ry;A=[{p:[cx,y],a:[cx-k*rx,y],b:[cx+k*rx,y]},{p:[x+w,cy],a:[x+w,cy-k*ry],b:[x+w,cy+k*ry]},{p:[cx,y+h],a:[cx+k*rx,y+h],b:[cx-k*rx,y+h]},{p:[x,cy],a:[x,cy+k*ry],b:[x,cy-k*ry]}].map(n=>({...n,sm:true}))}
+ else{const P=t==='poly'?[[.25,0],[.75,0],[1,.5],[.75,1],[.25,1],[0,.5]]:t==='tri'?[[.5,0],[1,1],[0,1]]:t==='arrow'?[[0,.35],[.6,.35],[.6,.1],[1,.5],[.6,.9],[.6,.65],[0,.65]]:star(s).split(' ').map(q=>{const r=q.split(',').map(Number);return[(r[0]-x)/w,(r[1]-y)/h]});A=P.map(q=>cr([x+q[0]*w,y+q[1]*h]))}
+ s.type='curve';s.closed=true;renorm(s,A)}
+function nodesUi(s,h){const A=absN(s);let x='';A.forEach((n,i)=>{if(i===NSI){x+=`<path d="M${n.a}L${n.p}L${n.b}" stroke="#2a7fff" fill="none" pointer-events="none"/>`;[['a',n.a],['b',n.b]].forEach(r=>x+=`<circle data-hn="${i}:${r[0]}" cx="${r[1][0]}" cy="${r[1][1]}" r="10" fill="#fff" stroke="#2a7fff" stroke-width="2"/>`)}x+=`<rect data-n="${i}" x="${n.p[0]-10}" y="${n.p[1]-10}" width="20" height="20" fill="${i===NSI?'#2a7fff':'#fff'}" stroke="#2a7fff" stroke-width="2"/>`});h.innerHTML+=x}
+function nodeMove(d,p){const s=d.s,A=absN(s),n=A[d.i];if(d.m==='nd'){const dx=p.x-n.p[0],dy=p.y-n.p[1];n.p=[p.x,p.y];n.a=[n.a[0]+dx,n.a[1]+dy];n.b=[n.b[0]+dx,n.b[1]+dy];F.node=true}else{n[d.w]=[p.x,p.y];if(n.sm){const o=d.w==='a'?'b':'a';n[o]=[2*n.p[0]-p.x,2*n.p[1]-p.y]}F.hnd=true}renorm(s,A)}
+function bzMove(d,p){const s=d.s,n=s.A[s.A.length-1];if(Math.hypot(p.x-n.p[0],p.y-n.p[1])>6){n.b=[p.x,p.y];n.a=[2*n.p[0]-p.x,2*n.p[1]-p.y];n.sm=true}renorm(s,s.A)}
+function nodeOp(a){const c=obj(SEL);if(!c||c.type!=='curve'){toast(K.nob[LG]);return}const A=absN(c),i=NSI,M=(u,v)=>[(u[0]+v[0])/2,(u[1]+v[1])/2];if(a!=='ncl'&&(i<0||i>=A.length)){toast(K.pn[LG]);return}
+ if(a==='nadd'){const j=(i+1)%A.length;if(j===0&&!c.closed){toast(K.pn[LG]);return}snap();const n0=A[i],n1=A[j],q0=M(n0.p,n0.b),q1=M(n0.b,n1.a),q2=M(n1.a,n1.p),r0=M(q0,q1),r1=M(q1,q2);n0.b=q0;n1.a=q2;A.splice(i+1,0,{p:M(r0,r1),a:r0,b:r1,sm:true});NSI=i+1;F.nadd=true}
+ else if(a==='ndel'){if(A.length<=2)return;snap();A.splice(i,1);NSI=-1}
+ else if(a==='nsm'){snap();const n=A[i];if(n.sm){n.a=[...n.p];n.b=[...n.p];n.sm=false}else{const pv=A[(i-1+A.length)%A.length].p,nx=A[(i+1)%A.length].p,k=1/6;n.a=[n.p[0]-(nx[0]-pv[0])*k,n.p[1]-(nx[1]-pv[1])*k];n.b=[n.p[0]+(nx[0]-pv[0])*k,n.p[1]+(nx[1]-pv[1])*k];n.sm=true}F.nsm=true}
+ else if(a==='ncl'){snap();c.closed=!c.closed;F.ncl=true}
+ renorm(c,A);draw();info()}
+const cvN=(pts,sm)=>pts.map(q=>({p:q,a:sm?[q[0]-.12,q[1]]:q,b:sm?[q[0]+.12,q[1]]:q,sm:!!sm}));
+function eraseAt(el){if(!el)return;const i=+el.dataset.id;if(!obj(i))return;S=S.filter(q=>q.id!==i);MS=MS.filter(q=>q!==i);if(SEL===i)SEL=null;F.deleted=true;F.erased=true;if(drag)drag.did=1;draw();info()}
+const TB=[['o','🔧 Объект','🔧 Obyekt'],['m','☑ Группа','☑ Guruh'],['e','✨ Эффекты','✨ Effekt'],['v','🔍 Вид','🔍 Ko‘rinish'],['f','💾 Файл','💾 Fayl'],['n','🧩 Узлы','🧩 Tugun']];
+function grpOf(b){const a=b.dataset.a||'';if(b.dataset.z!==undefined)return'v';if(b.id==='xbtn'||['abs','orn','mir'].includes(a))return'e';if(['ms','uni','sub','int','grp','ugr'].includes(a)||/^al/.test(a))return'm';if(['png','svg','clr'].includes(a))return'f';if(['nadd','ndel','nsm','ncl'].includes(a))return'n';return'o'}
+function setTab(t){TAB=t;$('#props').querySelectorAll('[data-g]').forEach(b=>b.style.display=b.dataset.g===t?'':'none');$('#tabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+function tabsUi(){$('#tabs').innerHTML=TB.map(t=>`<button data-t="${t[0]}">${t[1+LG]}</button>`).join('');setTab(TAB)}
+$('#props').querySelectorAll('button,label').forEach(b=>b.dataset.g=grpOf(b));
+$('#tabs').onclick=e=>{const b=e.target.closest('button');if(b)setTab(b.dataset.t)};
+$('#fab').addEventListener('click',e=>{const a=e.target.dataset.a;if(a){const b=document.querySelector('#props [data-a="'+a+'"]');if(b)b.click()}});
+document.addEventListener('keydown',e=>{if((e.key==='Delete'||e.key==='Backspace')&&!/INPUT|SELECT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){const b=document.querySelector('#props [data-a=del]');if(b)b.click()}});
+document.querySelectorAll('#lng [data-l]').forEach(b=>b.onclick=()=>{LG=+b.dataset.l;try{localStorage.setItem('cd_lg',LG)}catch(e){}$('#lng').classList.remove('on');ui();try{if(!localStorage.getItem('cd_lec')){localStorage.setItem('cd_lec','1');openLec()}}catch(e){}});
+function openRef(){F.ref=true;$('#ref .rb').innerHTML=`<div class="lh">${lgSeg()}<button id="rx" class="ab">✕</button></div><b>📚 ${K.rf[LG]}</b>`+TOOLS.map(t=>`<div class="ri"><i>${t[1]}</i><div><b>${t[2][LG]}</b> — ${USE[t[0]][LG]}<br><small>${t[3][LG]}</small></div></div>`).join('')+`<h4 style="margin:10px 0 2px">${K.ac[LG]}</h4>`+ACT.map(a=>`<div class="ri"><div><b>${a[LG*2]}</b><br><small>${a[LG*2+1]}</small></div></div>`).join('');$('#ref').classList.add('on');info()}
+$('#rfb').onclick=openRef;$('#ref').onclick=e=>{const lb=e.target.closest('button');if(lb&&lb.dataset.l!==undefined){setLang(+lb.dataset.l);return}if(e.target.id==='ref'||e.target.id==='rx')$('#ref').classList.remove('on')};const PG={x:200,y:250},mid=s=>({x:s.x+s.w/2,y:s.y+s.h/2}),E=()=>S.filter(s=>s.type==='ell'),ST=()=>S.filter(s=>s.type==='star'),RC=()=>S.filter(s=>s.type==='rect'),BK=()=>ST().find(s=>s.fill==='#000000');
+const mkS=(t,cx,cy,w,h,o={})=>({id:++id,type:t,x:cx-w/2,y:cy-h/2,w,h,fill:'#e4572e',stroke:'#1b2620',sw:0,...o});
+function spin(s,a,n,k,P){const out=[],r=a*Math.PI/180;let c=s;for(let i=0;i<n;i++){const m=mid(c),Q=P||m,dx=m.x-Q.x,dy=m.y-Q.y,nx=Q.x+dx*Math.cos(r)-dy*Math.sin(r),ny=Q.y+dx*Math.sin(r)+dy*Math.cos(r),w=c.w*k,h=c.h*k;c={...c,id:++id,w,h,x:nx-w/2,y:ny-h/2,rot:((c.rot||0)+a)%360};if(c.nodes)c.nodes=JSON.parse(JSON.stringify(c.nodes));out.push(c)}return out}
+function xform(){const s=obj(SEL);if(!s){toast(K.pick[LG]);return}const a=+$('#xa').value||0,n=Math.min(72,Math.max(0,+$('#xn').value|0)),k=(+$('#xs').value||100)/100,P=$('#xc').value==='p'?PG:null;snap();
+ if(!n){Object.assign(s,spin(s,a,1,k,P)[0],{id:s.id});F.xfr=true}else{const c=spin(s,a,n,k,P);S.push(...c);SEL=c[c.length-1].id}
+ F.xf=true;F.xfn=Math.max(F.xfn||0,n);if(k<1)F.xfs=true;draw();info()}
+$('#xbtn').onclick=()=>{XO=!XO;$('#xpan').classList.toggle('on',XO);$('#xbtn').classList.toggle('on',XO);draw();info()};$('#xgo').onclick=xform;
+let DK=0,DT=null;const lsn=()=>cur<0?CH:L[cur];
+function dview(){const l=lsn(),n=l.s.length,k=DK=Math.min(DK,n-1);$('#dsv').innerHTML=(l.p?l.p(k):[]).map(s=>`<g transform="${rot(s)}" opacity="${s.op||1}">${shp(s)}</g>`).join('');$('#dcap').innerHTML=`<small>${l.t[LG]} · ${K.stp[LG]} ${k+1}/${n}</small><br><b>${l.s[k][0][LG]}</b>`;$('#dp').disabled=k<1;$('#dn').disabled=k>=n-1}
+function dstop(){clearInterval(DT);DT=null;$('#da').textContent='▶ Auto'}
+$('#dp').onclick=()=>{dstop();DK=Math.max(0,DK-1);dview()};$('#dn').onclick=()=>{dstop();DK++;dview()};
+$('#da').onclick=()=>{if(DT)return dstop();DK=0;dview();$('#da').textContent='⏸';DT=setInterval(()=>{if(DK>=lsn().s.length-1)return dstop();DK++;dview()},2800)};
+$('#dx').onclick=()=>{dstop();$('#demo').classList.remove('on')};
+function info(){chk();const l=cur<0?CH:L[cur],ok=l.s.map(s=>!!s[1]()),nx=ok.indexOf(false),fin=nx<0;
+ if(fin&&cur<0&&!CHD.has(TODAY)){CHD.add(TODAY);confetti();save('cd_ch',[...CHD]);xp()}
+ if(fin&&cur>=0){if(!done.has(cur))confetti();done.add(cur);xp()}
+ if(fin&&cur>=0){try{localStorage.setItem('cd_done',JSON.stringify([...done]))}catch(e){}}
+ $('#lesson').innerHTML=`<h2>${cur<0?'🎯 '+K.ch[LG]:K.lp[LG]+' '+(cur+1)+'/'+L.length}: ${l.t[LG]}</h2><div class="why"><b>${K.why[LG]}</b> ${l.w[LG]}</div><ol class="st">${l.s.map((s,i)=>`<li class="${ok[i]?'ok':i===nx?'cur':''}"><span class="ck">${ok[i]?'✓':''}</span><span class="t">${s[0][LG]}</span></li>`).join('')}</ol>${l.p?`<button class="ab fx" id="dmb">📺 ${K.dm[LG]}</button> <button class="ab" id="smb">${K.sm[LG]}</button>${SM?`<svg viewBox="0 0 400 500" style="display:block;width:150px;margin-top:6px;background:#fff;border-radius:8px">${l.p(9).map(s=>`<g transform="${rot(s)}" opacity="${s.op||1}">${shp(s)}</g>`).join('')}</svg>`:''}`:''}`+
+ (fin?(cur<L.length-1?`<b>${K.ok[LG]}</b> <button class="go" id="nxt">${K.nx[LG]}</button>`:`<b>${K.end[LG]}</b> <button class="go" id="rst">${K.rs[LG]}</button>`):'');
+ $('#hint').textContent=fin?'✓ '+K.ok[LG]:l.s[nx][0][LG];$('#lesson').classList.toggle('mini',!LF);$('#lesson').insertAdjacentHTML('afterbegin',`<button class="ab" id="lfb" style="float:right">${LF?'▴':'▾'}</button>`);$('#lfb').onclick=()=>{LF=!LF;info()};
+ const db=$('#dmb');if(db)db.onclick=()=>{DK=0;$('#demo').classList.add('on');dview()};const sb=$('#smb');if(sb)sb.onclick=()=>{SM=!SM;info()};const n=$('#nxt');if(n)n.onclick=()=>openLesson(cur+1);const r=$('#rst');if(r)r.onclick=()=>{done=new Set();openLesson(0)};
+ document.querySelectorAll('.hl').forEach(x=>x.classList.remove('hl'));
+ if(!fin&&l.s[nx][2]){const h=$(l.s[nx][2]);if(h){h.classList.add('hl');const g=h.closest('#props [data-g]');if(g&&g.dataset.g!==TAB)setTab(g.dataset.g)}}}
+$('#mbtn').onclick=()=>{$('#mlist').innerHTML=`<div class="ch"><b>🎯 ${K.ch[LG]}: ${CH.t[LG]}</b>${CHD.has(TODAY)?' ✓':''}<br><button class="go" data-i="-1">▶</button></div><small>${K.rk[LG]}: <b>${RK[Math.min(3,xpv()/250|0)][LG]}</b> · ⭐${xpv()}</small><h3 style="margin:8px 0">${K.ls[LG]}</h3>`+L.map((l,i)=>`<button data-i="${i}" class="${i===cur?'cur':''} ${done.has(i)?'d':''}"><span class="n">${done.has(i)?'✓':i+1}</span><span>${l.t[LG]}</span></button>`).join('')+`<h3 style="margin:10px 0 4px">🏆 ${K.bd[LG]}</h3>`+BD.map(b=>`<span class="bd ${ACH.has(b[0])?'':'lk'}">${b[1]} ${b[2][LG]}</span>`).join('');$('#menu').classList.add('open')};
+$('#menu').onclick=e=>{const b=e.target.closest('button');if(b)openLesson(+b.dataset.i);else if(e.target.id==='menu')$('#menu').classList.remove('open')};
+var FS=null;
+function fit(){const on=FS===null?innerHeight<640:FS;document.body.classList.toggle('focus',on);$('#fc').classList.toggle('on',on)}
+addEventListener('resize',fit);$('#fc').onclick=()=>{FS=!document.body.classList.contains('focus');fit()};fit();
+openLesson(cur);
+try{if(localStorage.getItem('cd_lg')===null)$('#lng').classList.add('on');else if(!localStorage.getItem('cd_lec')){localStorage.setItem('cd_lec','1');openLec()}}catch(e){$('#lng').classList.add('on')}
+</script>
+</body>
+</html>
